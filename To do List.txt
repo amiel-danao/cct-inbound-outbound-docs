@@ -1,0 +1,36 @@
+PHP,css, html javascript.
+THIS is an offline only web app, please test everything offline. (download and include external dependecies to local)
+
+[]Web based Inbound and outbound Document management system
+[]City College of Tagaytay
+
+[]login of users using unique username
+[]admin will add users
+[]sending/upload to another user/download files, admin will only approve the files that should be approved before the upload is allowed. Only Non personal letters needed to be approved.
+[]searching of own documents
+[]users can archive their own document management page(admin can archive all documents)
+[]view/print reports, report management page(admin can view/print all documents)
+
+admin only pages:
+[]home/dashboard no.of files/users should be displayed. (u can use bootstrap Card)
+[]document management page should contain a searchbox(, table should contain columns, filename, sent by, upload date, status, download link, archive columns)
+[]user creation page, a form that contains basic info about a user: username, First name, Last Name, Address, contact.
+
+admin and common user pages:
+[]login page, the logo should be on the the left side, and the login form should be at the right side
+[]document management page should contain a searchbox(, table should contain columns, filename, sent by, upload date, status, download link, archive columns)
+[]report management page (have a searchbox, table)
+[] each page should have a logout button
+[] sidebar will be used as navigation (should be on the left side)
+[] include bootstrap icons for the side bar links, dashboard cards etc.
+
+Notes:
+use the colors of the logo for the color scheme of the website
+unique username will be used to login
+
+
+However, the system is limited only to inbound and outbound documents inside the City College of Tagaytay and its offices. 
+Only documents that demand permission are given their approval by the College President. 
+Therefore, not every document needs to 	be 	approved. 	
+The 	system 	only 	supports 	several 	file 	types, 
+including .docx,.doc,.pptx,.ppt,.xlsx,.xls,.pdf,.odt, and .jpg.

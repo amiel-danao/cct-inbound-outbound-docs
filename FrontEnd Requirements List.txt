@@ -1,0 +1,25 @@
+PHP,css, html javascript.
+THIS is an offline only web app, please test everything offline. (download and include external dependecies to local)
+Keep the design simple (No animations)
+
+
+admin only pages:
+[]home/dashboard no.of files/users should be displayed. (u can use bootstrap Card)
+[]document management page should contain a searchbox(, table should contain columns, filename, sent by, upload date, status, download link, archive columns)
+[]user creation page, a form that contains basic info about a user: username, First name, Last Name, Address, contact, password, confirm .
+
+admin and common user pages:
+[]login page, the logo should be on the the left side, and the login form should be at the right side
+[]document management page should contain a searchbox(, table should contain columns, filename, sent by, upload date, status, download link, archive columns)
+[]Document upload page, contains a form, File Name text field, upload file input, Send to: textfield , upload button
+[]report management page (have a searchbox, table)
+[] each page should have a logout button
+[] sidebar will be used as navigation (should be on the left side)
+[] include bootstrap icons for the side bar links, dashboard cards etc.
+
+
+Notes:
+use the colors of the logo for the color scheme of the website
+unique username will be used to login
+
+PHP 2,500
