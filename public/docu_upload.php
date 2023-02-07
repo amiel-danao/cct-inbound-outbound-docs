@@ -1,9 +1,9 @@
 <?php
 session_start();
+include "session_checker.php";
 $root_path = $_SESSION['root_path'];
 $public_path = $_SESSION['public_path'];
 include $root_path . '/db_connect.php';
-include $root_path . "/session_checker.php";
 ?>
 
 
@@ -66,17 +66,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         goto end;
 	}
 	if (move_uploaded_file($file['tmp_name'], $file_path)){
-
+        $status = 'pending';
+        if ($document_type == 'Personal'){
+            $status = 'approved';
+		}
 		// Insert a new row into the documents table
 		$date_upload = date('Y-m-d H:i:s');
-		$sql = "INSERT INTO documents (file_name, file_path, send_to, date_upload, document_type, uploaded_by)
-          VALUES ('$file_name', '$uploaded_path', '$send_to', '$date_upload', '$document_type', '$user->username')";
+		$sql = "INSERT INTO documents (file_name, file_path, send_to, date_upload, document_type, uploaded_by, status)
+          VALUES ('$file_name', '$uploaded_path', '$send_to', '$date_upload', '$document_type', '$user->username', '$status')";
 		
 
 		if ($conn->query($sql) === TRUE) {
 			$messages[] = "New record created successfully";
             $_SESSION['messages'] = $messages;
-            header("Location:" . $public_path . "/docu_management.php");
+            header("Location:" . $public_path . "/sent_page.php");
             exit();
 		} else {
 			$errors[] = "Error: " . $sql;

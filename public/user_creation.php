@@ -1,10 +1,27 @@
 <?php
 session_start();
+include "session_checker.php";
 $root_path = $_SESSION['root_path'];
 $public_path = $_SESSION['public_path'];
 include $root_path . '/db_connect.php';
-include $root_path . "/session_checker.php";
 ?>
+
+<?php
+function is_password_strong($password) {
+  $uppercase = preg_match('@[A-Z]@', $password);
+  $lowercase = preg_match('@[a-z]@', $password);
+  $number    = preg_match('@[0-9]@', $password);
+  $specialChars = preg_match('@[^\w]@', $password);
+
+  if(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8) {
+    return false;
+  }
+  else {
+    return true;
+  }
+}
+?>
+
 <?php
 require_once $root_path . '/models/User.php';
 $user = unserialize($_SESSION["user"]);
@@ -16,7 +33,7 @@ if ($user->userType != 'admin'){
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['form_values'] = $_POST;
-	$username = $_POST["username"];
+	$username = trim($_POST['username']);
 	$first_name = $_POST["first_name"];
 	$middle_name = $_POST["middle_name"];
 	$last_name = $_POST["last_name"];
@@ -27,11 +44,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		unset($_SESSION['form_values']);
 	}
 
+    $errors = array();
+    $messages = array();
+
+    $specialCharsInUsername = preg_match('@[^\w]@', $username);
+    if ($specialCharsInUsername){
+		$errors[] = 'The username cannot contain special characters!';
+        goto end;
+	}
+
+    if (preg_match('/\s/', $username)) {
+        $errors[] = 'The username cannot contain whitespaces!';
+        goto end;
+	}
+
+    if (!is_password_strong($password)) {
+		$errors[] = 'Password must contain: 1 uppercase, 1 lowercase, 1 number, 1 special characters and must be atleast 8 characters in length!';
+        goto end;
+	}
+
+    if ($password != $contact_number){
+		$errors[] = 'Password doesn\'t match!';
+        goto end;
+	}
+
 	// Check if the username already exists
 	$sql = "SELECT username FROM users WHERE username = '$username'";
 	$result = $conn->query($sql);
-    $errors = array();
-    $messages = array();
 
 	if ($result->num_rows > 0) {
 		$errors[] = "Username already exists, please choose another.";
@@ -49,12 +88,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		}
 	}
 
+    $conn->close();
+
+    end:
     $_SESSION['messages'] = $messages;
     $_SESSION['errors'] = $errors;
-
-	$conn->close();
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

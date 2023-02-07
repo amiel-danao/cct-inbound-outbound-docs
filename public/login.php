@@ -1,5 +1,7 @@
 <?php
   include 'db_connect.php';
+  $public_path = 'http://localhost/cct-inbound-outbound-docs/public';
+  $root_path = dirname(__FILE__);
 
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
@@ -14,8 +16,8 @@
 
     if (mysqli_num_rows($result) > 0) {
       session_start();
-      $root_path = dirname(__FILE__);
-      $public_path = 'http://localhost/cct-inbound-outbound-docs/public';
+
+
       $_SESSION['root_path'] = $root_path;
       $_SESSION['public_path'] = $public_path;
       require_once $root_path . '\models\User.php';
@@ -46,8 +48,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <script src="js/bootstrap.bundle.min.js"></script>
+  	<?php include $root_path . "/includes.php";?>
     <title>Login</title>
     <style>
       .button {
@@ -71,7 +72,7 @@
     <div class="row text-center p-5">
       
       <div class="col-6">
-      <img class="mb-4 img-fluid" src="CCT.jpg" alt="">
+	  	<img class="mb-4 img-fluid" src="<?php echo $public_path; ?>\images\logo.png" alt="logo" />
     </div>
       <div class="col-6">
       <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">

@@ -6,23 +6,23 @@ City College of Tagaytay
 
 [OK]login of users using unique username
 [OK]admin will add users
-[]sending/upload to another user/download files, admin will only approve the files that should be approved before the upload is allowed. Only Non personal letters needed to be approved.
-[]searching of own documents
-[]users can archive their own document management page(admin can archive all documents)
+[OK]sending/upload to another user/download files, admin will only approve the files that should be approved before the upload is allowed. Only Non personal letters needed to be approved.
+[OK]searching of own documents
+[OK]users can archive their own document management page(admin can archive all documents)
 []view/print reports, report management page(admin can view/print all documents)
 
 admin only pages:
 [OK]home/dashboard no.of files/users should be displayed. (u can use bootstrap Card)
-[]document management page should contain a searchbox(, table should contain columns, filename, sent by, upload date, status, download link, archive columns)
+[OK]document management page should contain a searchbox(, table should contain columns, filename, sent by, upload date, status, download link, archive columns)
 [OK]user creation page, a form that contains basic info about a user: username, First name, Last Name, Address, contact.
 
 admin and common user pages:
-[]login page, the logo should be on the the left side, and the login form should be at the right side
-[]document management page should contain a searchbox(, table should contain columns, filename, sent by, upload date, status, download link, archive columns)
-[]report management page (have a searchbox, table)
-[] each page should have a logout button
-[] sidebar will be used as navigation (should be on the left side)
-[] include bootstrap icons for the side bar links, dashboard cards etc.
+[ok]login page, the logo should be on the the left side, and the login form should be at the right side
+[ok]document management page should contain a searchbox(, table should contain columns, filename, sent by, upload date, status, download link, archive columns)
+[ok]report management page (have a searchbox, table)
+[ok] each page should have a logout button
+[ok] sidebar will be used as navigation (should be on the left side)
+[ok] include bootstrap icons for the side bar links, dashboard cards etc.
 
 Notes:
 use the colors of the logo for the color scheme of the website

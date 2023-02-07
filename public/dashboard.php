@@ -1,9 +1,9 @@
 <?php
 session_start();
+include "session_checker.php";
 $root_path = $_SESSION['root_path'];
 $public_path = $_SESSION['public_path'];
 include $root_path . '/db_connect.php';
-include $root_path . "/session_checker.php";
 ?>
 
 <!DOCTYPE html>
@@ -16,74 +16,94 @@ include $root_path . "/session_checker.php";
     <title>Dashboard</title>
   </head>
   <body style="background-color:	#8B0000;">
-  <div class="row">
-    <!--sidebar-->
-    <?php include "sidebar.php"; ?>
-    <!----bootstrap cards-->
-    
-      
+  	<?php include $root_path . "/messaging.php" ?>
+  	<div class="container-fluid">
+  		<div class="row">
+  			<!--sidebar-->
+  			<?php include "sidebar.php"; ?>
 
-    
-    <div class="col p-5">
-      <div class="row">
-	  	<h1 class="text-white">Welcome user</h1>
-      </div>
-    </div>
-    <!-- <section class="ftco-section">
-      <div class="container" style="background-color: white; width: 50%; position: fixed; top:110px; left:0; right:0;">
-        <div class="row">
-          <div class="col-md-12">
-            <h4 class="text-center mb-4">Dashboard</h4>
-            <div class="table-wrap">
-              <table class="table">
-                <thead class="thead-primary">
-                  <tr>
-                    <th>File Name</th>
-                    <th>Sent By</th>
-                    <th>Upload Date</th>
-                    <th>Status</th>
-                    <th>Download Link</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td> <?php echo $file_name; ?> </td>
-                    <td> <?php echo $sent_by; ?> </td>
-                    <td> <?php echo $upload_date; ?> </td>
-                    <td> <?php echo $status; ?> </td>
-                    <td>
-                      <a href="
-																			<?php echo $download_link; ?>">Download </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td> <?php echo $file_name; ?> </td>
-                    <td> <?php echo $sent_by; ?> </td>
-                    <td> <?php echo $upload_date; ?> </td>
-                    <td> <?php echo $status; ?> </td>
-                    <td>
-                      <a href="
-																			<?php echo $download_link; ?>">Download </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td> <?php echo $file_name; ?> </td>
-                    <td> <?php echo $sent_by; ?> </td>
-                    <td> <?php echo $upload_date; ?> </td>
-                    <td> <?php echo $status; ?> </td>
-                    <td>
-                      <a href="
-																			<?php echo $download_link; ?>">Download </a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-   -->
-   </div>
-  </body>
+  			<?php
+        require_once $root_path . '/models/User.php';
+        $user = unserialize($_SESSION["user"]);
+
+      $sql = "SELECT COUNT(*) FROM documents WHERE send_to = '$user->username'";
+      $result = mysqli_query($conn, $sql);
+
+      if (!$result) {
+          die("Error executing query: " . mysqli_error($conn));
+      }
+
+      $row = mysqli_fetch_row($result);
+      $num_files_received = $row[0];
+
+      $sql = "SELECT COUNT(*) FROM documents WHERE archive = 1";
+      $result = mysqli_query($conn, $sql);
+
+      if (!$result) {
+          die("Error executing query: " . mysqli_error($conn));
+      }
+
+      $row = mysqli_fetch_row($result);
+      $num_archive = $row[0];
+
+      $sql = "SELECT COUNT(*) FROM documents WHERE uploaded_by = '$user->username'";
+      $result = mysqli_query($conn, $sql);
+
+      if (!$result) {
+          die("Error executing query: " . mysqli_error($conn));
+      }
+
+      $row = mysqli_fetch_row($result);
+      $num_sent = $row[0];
+
+      mysqli_close($conn);
+  			?>
+
+
+  			<div class="col p-5">
+  				<div class="row">
+  					<div class="card col-4 m-3">
+  						<div class="card-body">
+  							<h5 class="card-title">Total Files Received</h5>
+  							<p class="card-text">
+  								<span class="badge badge-secondary text-black">
+  									Number of Files: <strong>
+  										<?php echo $num_files_received; ?>
+  									</strong>
+  								</span>
+  							</p>
+  						</div>
+  					</div>
+
+
+  					<div class="card col-4 bg-success m-3">
+  						<div class="card-body">
+  							<h5 class="card-title text-white">Total Files Sent</h5>
+  							<p class="card-text">
+  								<span class="badge badge-secondary">
+  									Number of Files: <strong>
+  										<?php echo $num_sent; ?>
+  									</strong>
+  								</span>
+  							</p>
+  						</div>
+  					</div>
+
+  					<div class="card col-4 bg-danger m-3">
+  						<div class="card-body">
+  							<h5 class="card-title text-white">Archived</h5>
+  							<p class="card-text">
+  								<span class="badge badge-secondary">
+  									Number of Files: <strong>
+  										<?php echo $num_archive; ?>
+  									</strong>
+  								</span>
+  							</p>
+  						</div>
+  					</div>
+  				</div>
+  			</div>
+
+  		</div>
+</div></body>
 </html>
