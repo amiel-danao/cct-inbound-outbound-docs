@@ -1,3 +1,99 @@
+<?php
+session_start();
+$root_path = $_SESSION['root_path'];
+$public_path = $_SESSION['public_path'];
+include $root_path . '/db_connect.php';
+include $root_path . "/session_checker.php";
+?>
+
+
+<?php
+require_once $root_path . '/models/User.php';
+$user = unserialize($_SESSION["user"]);
+// Check if the form is submitted
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    
+
+    $errors = array();
+    $messages = array();
+	// Get the form data
+	$file_name = $_POST['file_name'];
+	$send_to = $_POST['send_to'];
+	$file = $_FILES['file'];
+    $document_type = $_POST['document_type'];
+
+    if ($user->username == $send_to){
+        $errors[] = "You are not allowed to send files to yourself!";
+        goto end;
+	}
+
+    $sql = "SELECT COUNT(*) FROM users WHERE username = '$send_to'";
+	$result = mysqli_query($conn, $sql);
+
+	if (!$result) {
+        $sql_error = mysqli_error($conn);
+        $errors[] = $sql_error;
+        goto end;
+	}
+
+	$row = mysqli_fetch_row($result);
+	$num_users = $row[0];
+
+    if ($num_users <= 0){
+        $errors[] = "'Send to' user doesn't exist!";
+        goto end;
+	}
+
+	// File upload validation
+	$allowed_types = ['.docx', '.doc', '.pptx', '.ppt', '.xlsx', '.xls', '.pdf', '.odt', '.jpg'];
+	$file_type = "." . strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+	if (!in_array($file_type, $allowed_types)) {
+		// Show error message for invalid file type
+		$errors[] = 'Invalid file type: ' . $file_type;
+        goto end;
+	}
+
+	// Store the file
+    $uploaddir = $root_path . '/uploads/' . $user->id;
+    if (!file_exists($uploaddir)) {
+		mkdir($uploaddir, 0777, true);
+	}
+
+	$file_path = $uploaddir . $file['name'];
+    $uploaded_path = '/uploads/' . $user->id . $file['name'];
+    if (!is_dir($uploaddir) && !mkdir($uploaddir)){
+		$errors[] = "Error creating folder $uploaddir";
+        goto end;
+	}
+	if (move_uploaded_file($file['tmp_name'], $file_path)){
+
+		// Insert a new row into the documents table
+		$date_upload = date('Y-m-d H:i:s');
+		$sql = "INSERT INTO documents (file_name, file_path, send_to, date_upload, document_type, uploaded_by)
+          VALUES ('$file_name', '$uploaded_path', '$send_to', '$date_upload', '$document_type', '$user->username')";
+		
+
+		if ($conn->query($sql) === TRUE) {
+			$messages[] = "New record created successfully";
+            $_SESSION['messages'] = $messages;
+            header("Location:" . $public_path . "/docu_management.php");
+            exit();
+		} else {
+			$errors[] = "Error: " . $sql;
+		}
+	}
+    else{
+        $errors[] = "Error uploading the file, please try again later.";
+	}
+
+    end:
+    $_SESSION['messages'] = $messages;
+    $_SESSION['errors'] = $errors;
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -19,136 +115,64 @@
     </style>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-    <title>Docu Upload</title>
+  	<?php include $root_path . "/includes.php";?>
+    <title>Document Upload</title>
   </head>
   <body style="background-color:	#8B0000">
-    <!--sidebar--> 
-    <div class="d-flex flex-column flex-shrink-0 p-3"  style=" width: 280px; background-color: #ffd700">
-        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-          <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-          <span class="fs-4">Welcome!</span>
-        </a>
-      <form class="search" action="">
-        <form class="search" action="search.php" method="post">
-            <input type="text" name="searchTerm" placeholder="Search here..." required>
-            <input type="submit" value="Search">
-          </form>  
-          
-        <hr>
-        <ul class="nav nav-pills flex-column mb-auto">
-          <li class="nav-item">
-            <a href="#" class="nav-link link-dark">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-              Home/Dashboard
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link link-dark">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-              Sign Up
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link link-dark">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-              Login
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link link-dark">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-              Report
-            </a>
-          <li>
-            <a href="#" class="nav-link link-dark">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-              View Files
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link active" aria-current="page">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-              Upload Files
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link link-dark">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-              Logout
-            </a>
-          </li>
-        </ul>
-        <hr>
-            <img src="Profile Pic.jpg" alt="Profile" width="32" height="32" class="rounded-circle me-2">
-  <!--unique username display-->
-            <strong><?php
-              $username = $_GET['username'];
-              echo "Username: " . $username;?>
-            </strong>
-      </div>
-<!--upload details-->
-<?php
-if (isset($_POST['submit'])) {
-  $fileName = $_POST['fileName'];
-  $sentTo = $_POST['sentTo'];
-  
-  // code to handle file upload
-  $file = $_FILES['chooseFile']['tmp_name'];
-  $destination = "/path/to/destination/" . $fileName;
-  move_uploaded_file($file, $destination);
+  	<?php include $root_path . "/messaging.php" ?>
+  	<div class="container-fluid">
+  		<div class="row">
+  			<!--sidebar-->
+  			<?php include "sidebar.php"; ?>
+  			<!--upload details-->
 
-  // code to send the file
-  // ...
-  
-  echo "File '$fileName' has been uploaded and sent to '$sentTo'";
-}
-?>
-<div class="mask d-flex align-items-center h-100 gradient-custom-3">  
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-12 col-md-9 col-lg-7 col-xl-6 mx-auto">
-        <div class="card" style="border-radius: 15px; background-color: #ffd700; position: relative; top:-390px; left:0; right:0;">
-          <div class="card-body p-5">
-            <h2 class="text-uppercase text-center mb-5">Upload a File</h2>
-            <form action="" method="post" enctype="multipart/form-data">
-              <div class="form-outline mb-4">
-                <input type="text" name="fileName" class="form-control form-control-lg" required />
-                <label class="form-label" for="form3Example1cg">File Name</label>
-              </div>
 
-              <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-              <script type="text/javascript">
+  			<div class="col-4 offset-2 mt-2">
+  				<div class="card rounded bg-warning">
+  					<div class="card-body p-5">
+  						<h2 class="text-uppercase text-center mb-5">Upload a File</h2>
+  						<form method="post" enctype="multipart/form-data">
+  							<div class="form-outline mb-4">
+  								<input type="text" name="file_name" id="file_name" class="form-control form-control-lg" required />
+  								<label class="form-label" for="file_name">File Name</label>
+  							</div>
+
+  							<script type="text/javascript">
               $(document).ready(function(){
-                 $("#chooseFile").change(function(){
+                 $("#file").change(function(){
                     var fileName = $(this).val();
                     $("#noFile").text(fileName);
                  });
               });
-              </script>
-              
-              <div class="file-upload">
-                <div class="file-select">
-                  <div class="file-select-button" id="fileName">Choose File</div>
-                  <div class="file-select-name" id="noFile">No file chosen...</div> 
-                  <input type="file" name="chooseFile" id="chooseFile" required />
-                </div>
-              </div>
-              <br><br>
-              </div>
+  							</script>
 
-              <div class="form-outline mb-4">
-                <input type="text" name="sentTo" class="form-control form-control-lg" required />
-                <label class="form-label" for="form3Example1cg">Sent To</label>
-              </div>
-                <button type="submit" name="submit" class="button button1" style="color:black">Upload</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+  							<div class="file-upload mb-3">
+  								<div class="file-select">
+  									<div class="file-select-button" id="fileName">Choose File</div>
+  									<div class="file-select-name" id="noFile">No file chosen...</div>
+								  	<input type="file" name="file" id="file" accept=".docx,.doc,.pptx,.ppt,.xlsx,.xls,.pdf,.odt, .jpg" required />
+  								</div>
+  							</div>
+
+                              <div class="form-group mb-2">                                
+                                <select class="form-control" name="document_type" required>
+                                    <option value="Personal">Personal</option>
+                                    <option value="Non-Personal">Non-Personal</option>
+                                </select>
+                                  <label for="file_type">Document Type</label>
+                                </div>
+
+  							<div class="form-outline mb-4">
+  								<input type="text" name="send_to" id="send_to" class="form-control form-control-lg" title="Type in the user receiver's username" placeholder="type in receiver's username" required />
+  								<label class="form-label" for="send_to">Send To</label>
+  							</div>
+  							<button type="submit" name="submit" class="btn btn-success text-white">Upload</button>
+  						</form>
+  					</div>
+  				</div>
+  			</div>
+
+  		</div>
+  	</div>
   </body>
 </html>

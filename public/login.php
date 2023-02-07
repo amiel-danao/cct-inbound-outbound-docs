@@ -1,25 +1,46 @@
 <?php
-// Check if the form has been submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  // Get the form data
-  $email = $_POST["email"];
-  $password = $_POST["password"];
+  include 'db_connect.php';
 
-  // Check if the username and password are correct
-  if ($email == "admin@admin.com" && $password == "admin") {
-    // Start a session and store the email
-    session_start();
-    $_SESSION["email"] = $email;
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-    // Redirect to the protected page
-    header("Location: dashboard.php");
-    exit;
-  } else {
-    // Show an error message
-    echo "Invalid email or password";
+    $sql = "SELECT * FROM users WHERE username='$username' AND password='$password'";
+    $result = mysqli_query($conn, $sql);
+
+    if (!$result) {
+      die("Error executing query: " . mysqli_error($conn));
+    }
+
+    if (mysqli_num_rows($result) > 0) {
+      session_start();
+      $root_path = dirname(__FILE__);
+      $public_path = 'http://localhost/cct-inbound-outbound-docs/public';
+      $_SESSION['root_path'] = $root_path;
+      $_SESSION['public_path'] = $public_path;
+      require_once $root_path . '\models\User.php';
+
+      $row = mysqli_fetch_assoc($result);
+      $user_type = $row['user_type'];
+      $user = new User($row['id'], $row['username'], $row['first_name'], $row['middle_name'], $row['last_name'], $row['contact_number'], $user_type);
+      $_SESSION['user'] = serialize($user);
+
+      if ($user_type == 'admin') {
+
+        $_SESSION['username'] = $username;
+        header("location: admin/dashboard.php");
+      } else {
+        $_SESSION['username'] = $username;
+        header("location: dashboard.php");
+      }
+    } else {
+      echo "Invalid username or password";
+    }
   }
-}
+  mysqli_close($conn);
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -57,8 +78,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
           <h1 class="h3 mb-3 fw-normal" style="color:white">Login</h1>
           <div class="form-floating">
-            <input type="email" name="email" class="form-control" placeholder="name@example.com">
-            <label for="floatingInput">Email</label>
+            <input type="text" name="username" class="form-control" placeholder="">
+            <label for="floatingInput">Username</label>
           </div>
           <div class="form-floating">
             <input type="password" name="password" class="form-control" placeholder="Password" >

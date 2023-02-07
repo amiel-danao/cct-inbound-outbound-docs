@@ -11,22 +11,52 @@ include $root_path . "/session_checker.php";
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <script src="js/bootstrap.bundle.min.js"></script>
+  	<?php include $root_path . "/includes.php";?>
     <title>Dashboard</title>
   </head>
   <body style="background-color:	#8B0000;">
   <div class="row">
     <!--sidebar-->
-    <?php include "sidebar.php"; ?>
+    <?php include $root_path . "/sidebar.php"; ?>
     <!----bootstrap cards-->
     
-      
+    <?php
+      $sql = "SELECT COUNT(*) FROM users";
+      $result = mysqli_query($conn, $sql);
+
+      if (!$result) {
+          die("Error executing query: " . mysqli_error($conn));
+      }
+
+      $row = mysqli_fetch_row($result);
+      $num_users = $row[0];
+
+      // echo "Number of users: " . $num_users;
+
+      mysqli_close($conn);
+    ?>
 
     
     <div class="col p-5">
       <div class="row">
-	  	<h1 class="text-white">Welcome user</h1>
+        <div class="card col-4 bg-primary m-3" >
+          <div class="card-body">
+            <h5 class="card-title text-white">Users</h5>
+            <p class="card-text">
+              <span class="badge badge-secondary">Number of Users: <strong> <?php echo $num_users; ?> </strong>
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="card col-4 m-3" >
+          <div class="card-body">
+            <h5 class="card-title">Files</h5>
+            <p class="card-text">
+              <span class="badge badge-secondary">Number of Files: <strong> <?php echo $num_files; ?> </strong>
+              </span>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
     <!-- <section class="ftco-section">

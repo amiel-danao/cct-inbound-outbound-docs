@@ -1,4 +1,9 @@
-<div class="d-flex flex-column flex-shrink-0 p-3" style=" width: 280px; background-color: #ffd700">
+<?php
+
+require_once $root_path . '/models/User.php';
+$user = unserialize($_SESSION["user"]);
+?>
+<div class="col-2 bg-warning">
       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
         <svg class="bi pe-none me-2" width="40" height="32">
           <use xlink:href="#bootstrap"></use>
@@ -7,47 +12,66 @@
       </a>
       <hr>
 <ul class="nav nav-pills flex-column mb-auto">
+	
     <li class="nav-item">
-        <a href="dashboard.php" class="nav-link active" aria-current="page">
-        <svg class="bi pe-none me-2" width="16" height="16">
-            <use xlink:href="#speedometer2"></use>
-        </svg> Dashboard </a>
+		<a href="<?php 
+				 if ($user->userType == 'admin'){ 
+					 echo $public_path. '/admin/dashboard.php';
+				 } else {
+					 echo 'dashboard.php';
+				 } ?>"
+			class="nav-link link-dark <?php if (basename($_SERVER['REQUEST_URI']) == 'dashboard.php') echo 'active'; ?>" aria-current="page">
+			<svg class="bi pe-none me-2" width="16" height="16">
+				<use xlink:href="#speedometer2"></use>
+			</svg> Dashboard
+		</a>
     </li>
-    <!-- <li><a href="#" class="nav-link link-dark"><svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-        Sign Up
-        </a></li><li><a href="#" class="nav-link link-dark"><svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-        Login
-        </a></li> -->
+	<?php
+				 if ($user->userType == 'admin'){?>
+	<li>
+		<a href="<?php echo $public_path;?>/admin/users.php" class="nav-link link-dark <?php if (basename($_SERVER['REQUEST_URI']) == 'users.php') echo 'active'; ?>">
+			<svg class="bi pe-none me-2" width="16" height="16">
+				<use xlink:href="#speedometer2"></use>
+			</svg> Users
+		</a>
+	</li>
+
+	<?php }?>
+	<li>
+		<a href="<?php echo $public_path;?>/report_management.php" class="nav-link link-dark <?php if (basename($_SERVER['REQUEST_URI']) == 'report_management.php') echo 'active'; ?>">
+			<svg class="bi pe-none me-2" width="16" height="16">
+				<use xlink:href="#speedometer2"></use>
+			</svg> Report
+		</a>
+	</li>
     <li>
-        <a href="report_management.php" class="nav-link link-dark">
-        <svg class="bi pe-none me-2" width="16" height="16">
-            <use xlink:href="#speedometer2"></use>
-        </svg> Report </a>
-    <li>
-        <a href="docu_management.php" class="nav-link link-dark">
-        <svg class="bi pe-none me-2" width="16" height="16">
-            <use xlink:href="#speedometer2"></use>
-        </svg> View Files </a>
+		<a href="<?php echo $public_path;?>/docu_management.php" class="nav-link link-dark <?php if (basename($_SERVER['REQUEST_URI']) == 'docu_management.php') echo 'active'; ?>">
+			<svg class="bi pe-none me-2" width="16" height="16">
+				<use xlink:href="#speedometer2"></use>
+			</svg> View Files
+		</a>
     </li>
     <li>
-        <a href="docu_upload.php" class="nav-link link-dark">
-        <svg class="bi pe-none me-2" width="16" height="16">
-            <use xlink:href="#grid"></use>
-        </svg> Upload Files </a>
+		<a href="<?php echo $public_path;?>/docu_upload.php" class="nav-link link-dark <?php if (basename($_SERVER['REQUEST_URI']) == 'docu_upload.php') echo 'active'; ?>">
+			<svg class="bi pe-none me-2" width="16" height="16">
+				<use xlink:href="#grid"></use>
+			</svg> Upload Files
+		</a>
     </li>
     <li>        
-        <a href="?logout=1" class="nav-link link-dark">
-        <svg class="bi pe-none me-2" width="16" height="16">
-            <use xlink:href="#people-circle"></use>
-        </svg> Logout </a>
+		<a href="<?php echo $public_path;?>/logout.php" class="nav-link link-dark">
+			<svg class="bi pe-none me-2" width="16" height="16">
+				<use xlink:href="#people-circle"></use>
+			</svg> Logout
+		</a>
     </li>
 </ul>
 <hr>
-    <img src="Profile Pic.jpg" alt="Profile" width="32" height="32" class="rounded-circle me-2">
+    <img src="http://localhost/cct-inbound-outbound-docs/public/Profile Pic.jpg" alt="Profile" width="32" height="32" class="rounded-circle me-2">
     <!--unique username display-->
     <strong> 
-    <?php
-        $email = $_SESSION["email"];
-        echo $email;
-    ?> </strong>
+		<?php
+        echo $user->username;
+		?> 
+	</strong>
 </div>
