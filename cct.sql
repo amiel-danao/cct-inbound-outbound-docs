@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 20, 2023 at 03:33 PM
+-- Generation Time: Feb 20, 2023 at 08:41 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.0.25
 
@@ -44,10 +44,10 @@ CREATE TABLE `documents` (
 --
 
 INSERT INTO `documents` (`id`, `file_name`, `file_path`, `send_to`, `uploaded_by`, `date_upload`, `document_type`, `status`, `archive`) VALUES
-(7, 'file1', '/uploads/2CHAP-1-3revision.docx', 'user2', 'user1', '2023-02-07', 'Personal', 'approved', 1),
-(8, 'file22', '/uploads/2CHAP-1-3revision.docx', 'user2', 'user1', '2023-02-07', 'Non-Personal', 'approved', 0),
 (9, 'file33', '/uploads/3sample.pdf', 'user1', 'user2', '2023-02-07', 'Personal', 'approved', 0),
-(10, 'file1', '/uploads/2see8.jpg', 'user2', 'user1', '2023-02-09', 'Non-Personal', 'pending', 0);
+(12, 'file 69', '/uploads/1TRACKING.pdf', 'user2', 'admin@admin.com', '2023-02-20', 'Personal', 'approved', 0),
+(13, 'file 69', '/uploads/1TRACKING.pdf', 'user3', 'admin@admin.com', '2023-02-20', 'Personal', 'approved', 0),
+(14, 'file 69', '/uploads/1TRACKING.pdf', 'user4', 'admin@admin.com', '2023-02-20', 'Personal', 'approved', 0);
 
 -- --------------------------------------------------------
 
@@ -73,12 +73,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `first_name`, `middle_name`, `last_name`, `contact_number`, `user_type`, `last_login`, `active`) VALUES
-(1, 'admin@admin.com', 'admin', 'admin', 'admin', 'admin', '09954261220', 'admin', '2023-02-20 15:32:30', 1),
-(2, 'user1', 'admin', 'amiel', 'Fegalquin', 'Danao', '09954261220', 'user', '2023-02-20 14:25:27', 0),
-(3, 'user2', 'admin', 'amiel', 'Fegalquin', 'Danao', '09954261220', 'user', NULL, 1),
+(1, 'admin@admin.com', 'admin', 'admin', 'admin', 'admin', '09954261220', 'admin', '2023-02-20 20:36:08', 1),
+(2, 'system1', 'passwordThatIsStrong1@', 'amielz', 'Fegalquinz', 'Danaoz', '', 'system', '2023-02-20 20:21:17', 1),
+(3, 'user2', 'admin', 'amiel', 'Fegalquin', 'Danao', '09954261220', 'user', '2023-02-20 18:53:09', 1),
 (4, 'user3', 'admin', 'amiel', 'Fegalquin', 'Danao', '09954261220', 'user', NULL, 1),
 (5, 'user4', 'admin', 'amiel', 'Fegalquin', 'Danao', '09954261220', 'user', NULL, 1),
-(6, 'users_has_no_white_space', 'notCommonPassword123$', 'amiel', 'Fegalquin', 'Danao', '', 'user', NULL, 1);
+(7, 'user66', 'passwordThatIsStrong1@', 'user66', '', 'user66', '', 'user', '2023-02-20 20:35:07', 1);
 
 --
 -- Indexes for dumped tables
@@ -104,13 +104,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
