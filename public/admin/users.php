@@ -6,6 +6,15 @@ $public_path = $_SESSION['public_path'];
 include $root_path . '/db_connect.php';
 ?>
 
+<?php
+require_once $root_path . '/models/User.php';
+$user = unserialize($_SESSION["user"]);
+if ($user->userType != 'system'){
+	// If not, redirect to the login page
+	header("Location:" . $root_path . "/login.php");
+	exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -23,7 +32,7 @@ include $root_path . '/db_connect.php';
   			<?php include $root_path . "/sidebar.php"; ?>
   			<!--Table-->
   			<div class="col p-5">
-  				<a type="button" href="<?php echo $public_path . "/user_creation.php"; ?>" class="btn btn-primary mb-2">Add user</a>
+  				<a type="button" href="<?php echo $public_path . "/user_form.php"; ?>" class="btn btn-primary mb-2">Add user</a>
   				<table class="table bg-white">
   					<thead>
   						<tr>
@@ -33,15 +42,19 @@ include $root_path . '/db_connect.php';
   							<th>Middle Name</th>
   							<th>Last Name</th>
   							<th>Contact Number</th>
+						  	<th>User Type</th>
+						  	<th>Last Login</th>
+						  	<th>Active</th>
+						  	<th>Edit</th>
   						</tr>
   					</thead>
   					<tbody>
 
-  						<?php
+					  	<?php
 		include $root_path .'/db_connect.php';
 
       // Select data from users table
-      $sql = "SELECT id, username, first_name, middle_name, last_name, contact_number FROM users";
+	    $sql = "SELECT id, username, first_name, middle_name, last_name, contact_number, user_type, last_login, active FROM users";
       $result = mysqli_query($conn, $sql);
 
       // Check for errors
@@ -58,13 +71,17 @@ include $root_path . '/db_connect.php';
           echo "<td>" . $row["middle_name"] . "</td>";
           echo "<td>" . $row["last_name"] . "</td>";
           echo "<td>" . $row["contact_number"] . "</td>";
+          echo "<td>" . $row["user_type"] . "</td>";
+          echo "<td>" . $row["last_login"] . "</td>";
+          echo "<td>" . ($row["active"]==1? "activated" : "deactivated") . "</td>";
+          echo '<td><a type="button" class="btn btn-primary" href="'.$public_path.'/user_form.php/?user_id='.$row["id"].'">Edit</a></td>';
           echo "</tr>";
       }
       echo "</tbody>";
       echo "</table>";
 
       mysqli_close($conn);
-  						?>
+					  	?>
   					</tbody>
   				</table>
 

@@ -13,4 +13,7 @@ if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
+// Establish a database connection using PDO
+$pdo = new PDO('mysql:host='.$servername.';dbname='.$dbname, $username, $password);
+
 ?>

@@ -11,8 +11,7 @@ include $root_path . '/db_connect.php';
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <script src="js/bootstrap.bundle.min.js"></script>
+  	<?php include $root_path . "/includes.php";?>
     <title>Dashboard</title>
   </head>
   <body style="background-color:	#8B0000;">
@@ -36,7 +35,7 @@ include $root_path . '/db_connect.php';
       $row = mysqli_fetch_row($result);
       $num_files_received = $row[0];
 
-      $sql = "SELECT COUNT(*) FROM documents WHERE archive = 1";
+      $sql = "SELECT COUNT(*) FROM documents WHERE archive = 1 AND send_to = '$user->username'";
       $result = mysqli_query($conn, $sql);
 
       if (!$result) {

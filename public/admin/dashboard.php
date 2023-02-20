@@ -81,6 +81,8 @@ include $root_path . '/db_connect.php';
   							</p>
   						</div>
   					</div>
+
+				  	<?php if ($user->userType != 'system'){?>
   					<div class="card col-4 m-3">
   						<div class="card-body">
   							<h5 class="card-title">Total Files</h5>
@@ -118,6 +120,7 @@ include $root_path . '/db_connect.php';
   							</p>
   						</div>
   					</div>
+                      <?php }?>
   				</div>
   			</div>
   		</div>

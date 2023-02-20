@@ -4,6 +4,7 @@
   $root_path = dirname(__FILE__);
 
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $errors = array();
     $username = $_POST['username'];
     $password = $_POST['password'];
 
@@ -24,10 +25,22 @@
 
       $row = mysqli_fetch_assoc($result);
       $user_type = $row['user_type'];
-      $user = new User($row['id'], $row['username'], $row['first_name'], $row['middle_name'], $row['last_name'], $row['contact_number'], $user_type);
+
+      if (!isset($row['active']) || $row['active'] == 0){
+		  $errors[] = 'This account has been deactivated!';
+		  goto end;
+	  }
+
+      $user = new User($row['id'], $row['username'], $row['first_name'], $row['middle_name'], $row['last_name'], $row['contact_number'], $user_type, $row['last_login'], $row['active']);
       $_SESSION['user'] = serialize($user);
 
-      if ($user_type == 'admin') {
+      $now = date("Y-m-d H:i:s");
+
+	  // Update the last login date for the user
+	  $sql = "UPDATE users SET last_login = '$now' WHERE id = $user->id";
+	  mysqli_query($conn, $sql);
+
+      if ($user_type == 'admin' || $user_type == 'system') {
 
         $_SESSION['username'] = $username;
         header("location: admin/dashboard.php");
@@ -36,8 +49,13 @@
         header("location: dashboard.php");
       }
     } else {
-      echo "Invalid username or password";
+      $errors[] = "Invalid username or password";
+      goto end;
     }
+
+    end:
+
+    $_SESSION['errors'] = $errors;
   }
   mysqli_close($conn);
 
@@ -68,6 +86,7 @@
   </head>
 <!--login details-->
   <body class="text-right;" style="background-color:	#8B0000;">
+  	<?php include $root_path . "/messaging.php" ?>
   <div class="container-fluid">
     <div class="row text-center p-5">
       

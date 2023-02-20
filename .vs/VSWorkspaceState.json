@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\public",
+    "\\public\\admin",
     "\\public\\models"
   ],
-  "SelectedNode": "\\public\\models\\User.php",
+  "SelectedNode": "\\public\\logout.php",
   "PreviewInSolutionExplorer": false
 }

@@ -26,8 +26,8 @@ $user = unserialize($_SESSION["user"]);
 			Dashboard
 		</a>
     </li>
-	<?php
-				 if ($user->userType == 'admin'){?>
+	
+	<?php if ($user->userType == 'system'){?>
 	<li>
 		<a href="<?php echo $public_path;?>/admin/users.php" class="nav-link link-dark <?php if (basename($_SERVER['REQUEST_URI']) == 'users.php') echo 'active text-white'; ?>">
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewbox="0 0 16 16">
@@ -35,6 +35,8 @@ $user = unserialize($_SESSION["user"]);
 			</svg> Users
 		</a>
 	</li>
+	<?php }?>
+	<?php if ($user->userType == 'admin'){?>
 	<li>
 		<a href="<?php echo $public_path;?>/admin/pending_page.php" class="nav-link link-dark <?php if (basename($_SERVER['REQUEST_URI']) == 'pending_page.php') echo 'active text-white'; ?>">
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hourglass-split" viewbox="0 0 16 16">
@@ -50,32 +52,34 @@ $user = unserialize($_SESSION["user"]);
 		</a>
 	</li>
 	<?php }
-				 else{?>
+	if ($user->userType == 'user' || $user->userType == 'admin'){?>
+	<li>
+		<a href="<?php echo $public_path;?>/docu_upload.php" class="nav-link link-dark <?php if (basename($_SERVER['REQUEST_URI']) == 'docu_upload.php') echo 'active text-white'; ?>">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewbox="0 0 16 16">
+				<path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
+				<path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"></path>
+			</svg> Send File
+		</a>
+	</li>
 	<li>
 		<a href="<?php echo $public_path;?>/received_page.php" class="nav-link link-dark <?php if (basename($_SERVER['REQUEST_URI']) == 'received_page.php') echo 'active text-white'; ?>">
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-down-right" viewbox="0 0 16 16">
 				<path fill-rule="evenodd" d="M6.364 2.5a.5.5 0 0 1 .5-.5H13.5A1.5 1.5 0 0 1 15 3.5v10a1.5 1.5 0 0 1-1.5 1.5h-10A1.5 1.5 0 0 1 2 13.5V6.864a.5.5 0 1 1 1 0V13.5a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5v-10a.5.5 0 0 0-.5-.5H6.864a.5.5 0 0 1-.5-.5z"></path>
 				<path fill-rule="evenodd" d="M11 10.5a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1 0-1h3.793L1.146 1.854a.5.5 0 1 1 .708-.708L10 9.293V5.5a.5.5 0 0 1 1 0v5z"></path>
-			</svg>Received Files
+			</svg> Received Files
 		</a>
 	</li>
     <li>
 		<a href="<?php echo $public_path;?>/sent_page.php" class="nav-link link-dark <?php if (basename($_SERVER['REQUEST_URI']) == 'sent_page.php') echo 'active text-white'; ?>">
-			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-check" viewbox="0 0 16 16">
-				<path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855a.75.75 0 0 0-.124 1.329l4.995 3.178 1.531 2.406a.5.5 0 0 0 .844-.536L6.637 10.07l7.494-7.494-1.895 4.738a.5.5 0 1 0 .928.372l2.8-7Zm-2.54 1.183L5.93 9.363 1.591 6.602l11.833-4.733Z"></path>
-				<path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z"></path>
-			</svg>Sent Files
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-right-square-fill" viewbox="0 0 16 16">
+				<path d="M14 0a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12zM5.904 10.803 10 6.707v2.768a.5.5 0 0 0 1 0V5.5a.5.5 0 0 0-.5-.5H6.525a.5.5 0 1 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 .707.707z"></path>
+			</svg> Sent Files
 		</a>
     </li>
-    <li>
-		<a href="<?php echo $public_path;?>/docu_upload.php" class="nav-link link-dark <?php if (basename($_SERVER['REQUEST_URI']) == 'docu_upload.php') echo 'active text-white'; ?>">
-			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewbox="0 0 16 16">
-				<path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
-				<path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"></path>
-			</svg> Upload Files
-		</a>
-    </li>
+    
 	<?php }?>
+
+	<?php if ($user->userType == 'user' || $user->userType == 'admin'){?>
 	<li>
 		<a href="<?php echo $public_path;?>/archive_page.php" class="nav-link link-dark <?php if (basename($_SERVER['REQUEST_URI']) == 'archive_page.php') echo 'active text-white'; ?>">
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewbox="0 0 16 16">
@@ -83,6 +87,7 @@ $user = unserialize($_SESSION["user"]);
 			</svg>Archived Files
 		</a>
 	</li>
+	<?php } ?>
     <li>        
 		<a href="<?php echo $public_path;?>/logout.php" class="nav-link link-dark">
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewbox="0 0 16 16">

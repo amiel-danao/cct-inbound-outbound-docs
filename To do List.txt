@@ -9,7 +9,7 @@ City College of Tagaytay
 [OK]sending/upload to another user/download files, admin will only approve the files that should be approved before the upload is allowed. Only Non personal letters needed to be approved.
 [OK]searching of own documents
 [OK]users can archive their own document management page(admin can archive all documents)
-[]view/print reports, report management page(admin can view/print all documents)
+[OK]view/print reports, report management page(admin can view/print all documents)
 
 admin only pages:
 [OK]home/dashboard no.of files/users should be displayed. (u can use bootstrap Card)

@@ -1,0 +1,38 @@
+
+
+
+
+[OK] No Icon of CCT logo dun sa tab (kapag nasa dashboard)
+•[OK] Report Management Module (anong oras nag log in yung user)
+•[OK] laging may 1 files sa archieve kahit wala namang nasa archieve
+• Send files to all users
+•[OK] bug po sa password kahit pareho ang nalabas parin is "password doesn't match"
+•[OK] Send files to all users
+•[OK]activate/deactivate user
+
+USERS
+*System Admin
+-ito po yung may hawak ng  mga user which is nakaka pag deact at activate po
+
+*Admin
+-Hindi niya po magagalaw yung user
+-Sya lang yung makakapagapprove ng files
+-makakapag upload din po ng files
+
+*Offices
+-tama na po yung user na nandito
+
+
+
+
+•Change the "UPLOAD FILE" to "SEND FILE"
+
+
+• Change icon at the side of send files.
+• Switch position of page (users). 
+1st page: Send file
+2nd page: Received Files 
+3rd page: Sent Files
+
+• Add Dropdown on (Send to) 
+Dito po sa dropdown po, kapag nag add kami ng user is may parang button nalang po na iseselect yung mga user po kung kanino mag seseend.
