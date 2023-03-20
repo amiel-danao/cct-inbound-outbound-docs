@@ -63,52 +63,46 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  	<?php include $root_path . "/includes.php";?>
-    <title>Login</title>
-    <style>
-      .button {
-        background-color: #ffd700;
-        border: none;
-        color: white;
-        padding: 15px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        margin: 4px 2px;
-        cursor: pointer;
-      }
-      
-      .button1 {font-size: 20px;}
-      </style>
-  </head>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<?php include $root_path . "/includes.php";?>
+	<title>Login</title>
+</head>
 <!--login details-->
-  <body class="text-right;" style="background-color:	#8B0000;">
-  	<?php include $root_path . "/messaging.php" ?>
-  <div class="container-fluid">
-    <div class="row text-center p-5">
-      
-      <div class="col-6">
-	  	<img class="mb-4 img-fluid" src="<?php echo $public_path; ?>\images\logo.png" alt="logo" />
-    </div>
-      <div class="col-6">
-      <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-        
-          <h1 class="h3 mb-3 fw-normal" style="color:white">Login</h1>
-          <div class="form-floating">
-            <input type="text" name="username" class="form-control" placeholder="">
-            <label for="floatingInput">Username</label>
-          </div>
-          <div class="form-floating">
-            <input type="password" name="password" class="form-control" placeholder="Password" >
-            <label for="floatingPassword">Password</label>
-          </div>
-          <button type="submit" class="button" style="color:black">Sign In</button>
-      </form>
-      </div>
-    </div>
-    </div>
-   </body>
+<body class="hold-transition bg-secondary">
+	<div class="wrapper">
+
+
+		
+		<div class="container-fluid">
+			<div class="row text-center p-5">
+
+				<div class="col-6 card mx-auto">
+					<div class="card-header">
+						<img class="mb-4 img-fluid" src="<?php echo $public_path; ?>\images\logo.png" alt="logo" />
+					</div>
+					<div class="card-body">
+						<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+
+							<h1 class="h3 mb-3 fw-normal" style="color:white">Login</h1>
+							<div class="form-floating">
+								<input type="text" name="username" class="form-control" placeholder="" />
+								<label for="floatingInput">Username</label>
+							</div>
+							<div class="form-floating">
+								<input type="password" name="password" class="form-control" placeholder="Password" />
+								<label for="floatingPassword">Password</label>
+							</div>
+							<button type="submit" class="btn btn-primary">Sign In</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<?php include $root_path . "/includes_js.php";?>
+	<?php include $root_path . "/messaging.php" ?>
+</body>
 </html>

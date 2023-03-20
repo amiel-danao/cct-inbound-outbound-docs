@@ -43,34 +43,35 @@ $_SESSION['errors'] = $errors;
 	<?php include $root_path . "/includes.php";?>
 	<title>Document Management</title>
 </head>
-<body style="background-color:	#8B0000">
-	<?php include $root_path . "/messaging.php" ?>
-	<div class="container-fluid">
-		<div class="row">
-			<!--sidebar-->
-			<?php include "sidebar.php"; ?>
-			<!--Table-->
+<body class="hold-transition sidebar-mini">
+	<div class="wrapper">
+		<?php include $root_path . "/sidebar.php"; ?>
+		<div class="content-wrapper">
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<!--Table-->
 
 
-			<div class="col p-5">
-				<h1 class="text-white">Received Files</h1>
-				<?php include $root_path . "/search.php"; ?>
-				<div class="table-wrap">
-					<table class="table bg-white">
-						<thead class="thead-primary">
-							<tr>
-								<th>File Name</th>
-								<th>Uploaded by</th>
-								<th>Upload Date</th>
-								<th>Status</th>
-								<th>Type</th>
-								<th>Download Link</th>
-								<th>Archive</th>
-								<th>Print</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php
+						<div class="col p-5">
+							<h1>Received Files</h1>
+							<?php include $root_path . "/search.php"; ?>
+							<div class="table-wrap">
+								<table class="table bg-white">
+									<thead class="thead-primary">
+										<tr>
+											<th>File Name</th>
+											<th>Uploaded by</th>
+											<th>Upload Date</th>
+											<th>Status</th>
+											<th>Type</th>
+											<th>Download Link</th>
+											<th>Archive</th>
+											<th>Print</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php
 							if (mysqli_num_rows($result) > 0) {
 								while($row = mysqli_fetch_assoc($result)) {
 									echo '<tr>
@@ -99,16 +100,21 @@ $_SESSION['errors'] = $errors;
                   <td colspan="8" class="text-center">No records...</td>
                 </tr>';
 							}
-							?>
+                                        ?>
 
-						</tbody>
-					</table>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<iframe id="fileFrame" style="display:none;"></iframe>
-	<script>
+			<iframe id="fileFrame" style="display:none;"></iframe>
+	<?php include $root_path . "/includes_js.php";?>
+	<?php include $root_path . "/messaging.php" ?>
+			<script>
 		function printFile(filePath) {
 		  var fileFrame = document.getElementById("fileFrame");
 		  fileFrame.src = filePath;
@@ -116,6 +122,7 @@ $_SESSION['errors'] = $errors;
 			fileFrame.contentWindow.print();
 		  }
 		}
-	</script>
+			</script>
+
 </body>
 </html>

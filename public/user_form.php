@@ -196,17 +196,24 @@ end:
   	<?php include $root_path . "/includes.php";?>
     <title><?php echo $pageTitle;?></title>
   </head>
-  <body style="background-color:	#8B0000">
-  	<?php include $root_path . "/messaging.php" ?>
-     <!--sidebar--> 
-  	
+  <body class="hold-transition sidebar-mini">
+	<div class="wrapper">
+        <!--sidebar-->
+		<?php include $root_path . "/sidebar.php"; ?>
+		<div class="content-wrapper">
+			<div class="content">
 <!--Signup-->
 <!--<div class="mask d-flex align-items-center h-100 gradient-custom-3">-->  
   <div class="container-fluid">
     <div class="row">
-        <?php include $root_path . "/sidebar.php"; ?>
-      <div class="col-4 offset-2 bg-warning rounded mt-2">
-          <h2 class="text-uppercase text-center mb-5"><?php echo $pageTitle;?></h2>
+      <div class="col-6 offset-2 rounded mt-2">
+          
+          <div class="card card-success">
+              <div class="card-header">
+             <h2 class="card-title text-center"><?php echo $pageTitle;?></h2>
+            </div>
+         
+              <div class="card-body">
             <form class="form" method="post">
 
               <div class="form-outline mb-4">
@@ -244,32 +251,37 @@ end:
 				<label class="form-label" for="form3Example6cdg">Confirm Password*</label>
 			</div>
 
-            <label class="form-label" for="user_type">User Type</label>
-            <select class="form-select mb-2" id="user_type" name="user_type" aria-label="User Type">
-              <option <?php if (isset($form_values['user_type']) && $form_values['user_type'] == 'admin') {echo 'selected';} ?> value="admin">Admin</option>
-              <option <?php if (isset($form_values['user_type']) && $form_values['user_type'] == 'system') {echo 'selected';} ?> value="system">System</option>
-                <option <?php if (!isset($form_values['user_type']) || $form_values['user_type'] == 'user') {echo 'selected';} ?> value="user">User</option>
-            </select>
+                <div class="form-group">
+                    <label for="user_type">User Type</label>
+                    <select class="form-control mb-2" id="user_type" name="user_type" aria-label="User Type">
+                      <option <?php if (isset($form_values['user_type']) && $form_values['user_type'] == 'admin') {echo 'selected';} ?> value="admin">Admin</option>
+                      <option <?php if (isset($form_values['user_type']) && $form_values['user_type'] == 'system') {echo 'selected';} ?> value="system">System</option>
+                        <option <?php if (!isset($form_values['user_type']) || $form_values['user_type'] == 'user') {echo 'selected';} ?> value="user">User</option>
+                    </select>
+                </div>
 
-            <label class="form-label" for="active_select">Active</label>
-            <select class="form-select mb-2" id="active_select" name="active" aria-label="Active">
-              <option <?php if (isset($form_values['active']) && $form_values['active'] == 1) {echo 'selected';} ?> value="1">Activated</option>
-              <option <?php if (isset($form_values['active']) && $form_values['active'] == 0) {echo 'selected';} ?> value="0">Deactivated</option>
-            </select>
+                <div class="form-group">
+                    <label for="active_select">Active</label>
+                    <select class="form-control mb-2" id="active_select" name="active" aria-label="Active">
+                        <option <?php if (isset($form_values['active']) && $form_values['active'] == 1) {echo 'selected';} ?> value="1">Activated</option>
+                        <option <?php if (isset($form_values['active']) && $form_values['active'] == 0) {echo 'selected';} ?> value="0">Deactivated</option>
+                    </select>
+                </div>
 
               <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 text-white"><?php if($typeOfEdit == 'New'){echo 'Create user';}else{echo 'Update user';} ?></button>
               </div>
             </form>
-        <!--<div class="card" style="border-radius: 15px; background-color: #ffd700; position: relative; top:-390px; left:0; right:0;">
-          <div class="card-body">
-            
-          </div>
-        </div>-->
+            </div>
+        </div>
       </div>
     </div>
   </div>
+</div>
+</div>
+</div>
 <!--</div>-->
-  	
+  	<?php include $root_path . "/includes_js.php";?>
+	<?php include $root_path . "/messaging.php" ?>
   </body>
 </html>

@@ -105,44 +105,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <style>
-      .file-upload{display:block;text-align:center;font-family: Helvetica, Arial, sans-serif;font-size: 12px;}
-.file-upload .file-select{display:block;border: 2px solid #dce4ec;color: #34495e;cursor:pointer;height:40px;line-height:40px;text-align:left;background:#FFFFFF;overflow:hidden;position:relative;}
-.file-upload .file-select .file-select-button{background:#dce4ec;padding:0 10px;display:inline-block;height:40px;line-height:40px;}
-.file-upload .file-select .file-select-name{line-height:40px;display:inline-block;padding:0 10px;}
-.file-upload .file-select:hover{border-color:#34495e;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
-.file-upload .file-select:hover .file-select-button{background:#34495e;color:#FFFFFF;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
-.file-upload.active .file-select{border-color:#3fa46a;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
-.file-upload.active .file-select .file-select-button{background:#3fa46a;color:#FFFFFF;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
-.file-upload .file-select input[type=file]{z-index:100;cursor:pointer;position:absolute;height:100%;width:100%;top:0;left:0;opacity:0;filter:alpha(opacity=0);}
-.file-upload .file-select.file-select-disabled{opacity:0.65;}
-.file-upload .file-select.file-select-disabled:hover{cursor:default;display:block;border: 2px solid #dce4ec;color: #34495e;cursor:pointer;height:40px;line-height:40px;margin-top:5px;text-align:left;background:#FFFFFF;overflow:hidden;position:relative;}
-.file-upload .file-select.file-select-disabled:hover .file-select-button{background:#dce4ec;color:#666666;padding:0 10px;display:inline-block;height:40px;line-height:40px;}
-.file-upload .file-select.file-select-disabled:hover .file-select-name{line-height:40px;display:inline-block;padding:0 10px;}
-    </style>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   	<?php include $root_path . "/includes.php";?>
       <?php echo '<link href="'.$public_path.'/css/multi-select.css" rel="stylesheet" />';?>
     <title>Document Upload</title>
   </head>
-  <body style="background-color:	#8B0000">
-  	<?php include $root_path . "/messaging.php" ?>
+  <body class="hold-transition sidebar-mini">
+	<div class="wrapper">
+        <?php include $root_path . "/sidebar.php"; ?>
+		<div class="content-wrapper">
+			<div class="content">
   	<div class="container-fluid">
   		<div class="row">
-  			<!--sidebar-->
-  			<?php include "sidebar.php"; ?>
   			<!--upload details-->
 
 
-  			<div class="col-4 offset-2 mt-2">
-  				<div class="card rounded bg-warning">
+  			<div class="mt-2 col-8">
+  				<div class="card card-primary rounded">
+                    <div class="card-header">
+                        <h2 class="text-uppercase text-center">Upload a File</h2>
+                    </div>
   					<div class="card-body">
-  						<h2 class="text-uppercase text-center mb-5">Upload a File</h2>
+  						
   						<form method="post" enctype="multipart/form-data">
   							<div class="form-outline mb-4">
-  								<input type="text" name="file_name" id="file_name" class="form-control form-control-lg" required />
-  								<label class="form-label" for="file_name">File Name</label>
+                                <label class="form-label" for="file_name">File Name</label>
+  								<input type="text" name="file_name" id="file_name" class="form-control form-control-lg" required />  								
   							</div>
 
   							<script type="text/javascript">
@@ -154,20 +143,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                               });
   							</script>
 
-  							<div class="file-upload mb-3">
-  								<div class="file-select">
-  									<div class="file-select-button" id="fileName">Choose File</div>
-  									<div class="file-select-name" id="noFile">No file chosen...</div>
-								  	<input type="file" name="file" id="file" accept=".docx,.doc,.pptx,.ppt,.xlsx,.xls,.pdf,.odt, .jpg" required />
-  								</div>
-  							</div>
+                            <div class="input-group file-upload mb-3">
+                                <div class="file-select">
+                                    <label class="custom-file-label" for="file">Choose file</label>
+                                    <input type="file" name="file" id="file" accept=".docx,.doc,.pptx,.ppt,.xlsx,.xls,.pdf,.odt, .jpg" required >                                    
+                                </div>
+                            </div>
 
+                              
                               <div class="form-group mb-2">                                
+                                  <label for="file_type">Document Type</label>
                                 <select class="form-control" name="document_type" required>
                                     <option value="Personal">Personal</option>
                                     <option value="Non-Personal">Non-Personal</option>
                                 </select>
-                                  <label for="file_type">Document Type</label>
+                                  
                                 </div>
 
   							<!--<div class="form-outline mb-4">
@@ -193,7 +183,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   		</div>
   	</div>
-
+    </div>
+    </div>
+    </div>
       <script src="js/jquery.multi-select.js" type="text/javascript"></script>
       <script>
           $('#send_to').multiSelect();
@@ -207,6 +199,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           });
           
       </script>
-  </body>
+  <?php include $root_path . "/includes_js.php";?>
+	<?php include $root_path . "/messaging.php" ?>
+   </body>
     
 </html>

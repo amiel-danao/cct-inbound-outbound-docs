@@ -36,38 +36,39 @@ $_SESSION['errors'] = $errors;
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  	<?php include $root_path . "/includes.php";?>  	
-    <title>Document Management</title>
-  </head>
-  <body style="background-color:	#8B0000">
-  	<?php include $root_path . "/messaging.php" ?>
-<div class="container-fluid">
-    <div class="row">
-    <!--sidebar--> 
-    <?php include "sidebar.php"; ?>
-<!--Table-->    
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<?php include $root_path . "/includes.php";?>
+	<title>Document Management</title>
+</head>
+<body class="hold-transition sidebar-mini">
+	<div class="wrapper">
+		<?php include $root_path . "/sidebar.php"; ?>
+		<div class="content-wrapper">
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<!--Table-->
 
- 
-  <div class="col p-5">
-      <h1 class="text-white">Sent Files</h1>
-  	<?php include $root_path . "/search.php"; ?>
-  <div class="table-wrap">
-  <table class="table bg-white">
-  <thead class="thead-primary">
-  <tr>
-  <th>File Name</th>
-  <th>Send To</th>
-  <th>Upload Date</th>
-  <th>Status</th>
-    <th>Type</th>
-  <th>Download Link</th>
-  </tr>
-  </thead>
-  <tbody>
-  	<?php
+
+						<div class="col p-5">
+							<h1>Sent Files</h1>
+							<?php include $root_path . "/search.php"; ?>
+							<div class="table-wrap">
+								<table class="table bg-white">
+									<thead class="thead-primary">
+										<tr>
+											<th>File Name</th>
+											<th>Send To</th>
+											<th>Upload Date</th>
+											<th>Status</th>
+											<th>Type</th>
+											<th>Download Link</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php
 	  if (mysqli_num_rows($result) > 0) {
           while($row = mysqli_fetch_assoc($result)) {
             echo '<tr>
@@ -85,13 +86,18 @@ $_SESSION['errors'] = $errors;
                   <td colspan="6" class="text-center">No records...</td>
                 </tr>';
 	  }
-  	?>
+                                        ?>
 
-  </tbody>
-  </table>
-  </div>
-  </div>
-  </div>
-  </div>
-  </body>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php include $root_path . "/includes_js.php";?>
+	<?php include $root_path . "/messaging.php" ?>
+</body>
 </html>

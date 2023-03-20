@@ -17,40 +17,46 @@ if ($user->userType != 'system'){
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  	<?php include $root_path . "/includes.php";?>
-    <title>Users</title>
-  </head>
-  <body style="background-color:	#8B0000;">
-  	<?php include $root_path . "/messaging.php" ?>
-  	<div class="container-fluid">
-  		<div class="row">
-  			
-  			<!--sidebar-->
-  			<?php include $root_path . "/sidebar.php"; ?>
-  			<!--Table-->
-  			<div class="col p-5">
-  				<a type="button" href="<?php echo $public_path . "/user_form.php"; ?>" class="btn btn-primary mb-2">Add user</a>
-  				<table class="table bg-white">
-  					<thead>
-  						<tr>
-  							<th>ID</th>
-  							<th>Username</th>
-  							<th>First Name</th>
-  							<th>Middle Name</th>
-  							<th>Last Name</th>
-  							<th>Contact Number</th>
-						  	<th>User Type</th>
-						  	<th>Last Login</th>
-						  	<th>Active</th>
-						  	<th>Edit</th>
-  						</tr>
-  					</thead>
-  					<tbody>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<?php include $root_path . "/includes.php";?>
+	<title>Users</title>
+</head>
+<body class="hold-transition sidebar-mini">
+	<div class="wrapper">
+		<?php include $root_path . "/messaging.php" ?>
+		<!--sidebar-->
+		<?php include $root_path . "/sidebar.php"; ?>
+		<div class="content-wrapper">
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<h1>Users</h1>
+					</div>
+					<div class="row">
 
-					  	<?php
+						<!--Table-->
+						<div class="col p-5">
+							<a type="button" href="<?php echo $public_path . "/user_form.php"; ?>" class="btn btn-primary mb-2">Add user</a>
+							<table class="table bg-white">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Username</th>
+										<th>First Name</th>
+										<th>Middle Name</th>
+										<th>Last Name</th>
+										<th>Contact Number</th>
+										<th>User Type</th>
+										<th>Last Login</th>
+										<th>Active</th>
+										<th>Edit</th>
+									</tr>
+								</thead>
+								<tbody>
+
+									<?php
 		include $root_path .'/db_connect.php';
 
       // Select data from users table
@@ -81,15 +87,18 @@ if ($user->userType != 'system'){
       echo "</table>";
 
       mysqli_close($conn);
-					  	?>
-  					</tbody>
-  				</table>
+									?>
+								</tbody>
+							</table>
 
-  			</div>
+						</div>
 
 
-  		</div>
+					</div>
 
-          </div>
-  </body>
+				</div>
+			</div>
+		</div>
+	</div>	
+</body>
 </html>

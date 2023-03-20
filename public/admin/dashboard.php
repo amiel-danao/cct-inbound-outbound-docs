@@ -14,15 +14,21 @@ include $root_path . '/db_connect.php';
   	<?php include $root_path . "/includes.php";?>  	
     <title>Dashboard</title>
   </head>
-  <body style="background-color:	#8B0000;">
-  	<?php include $root_path . "/messaging.php" ?>
-  	<div class="container-fluid">
-  		<div class="row">
-  			<!--sidebar-->
-  			<?php include $root_path . "/sidebar.php"; ?>
-  			<!----bootstrap cards-->
+<body class="hold-transition sidebar-mini">
+	<div class="wrapper">
+		<!--sidebar-->
+		<?php include $root_path . "/sidebar.php"; ?>
+		<div class="content-wrapper">
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<h1>Dashboard</h1>
+					</div>
+					<div class="row">
+						
+						<!----bootstrap cards-->
 
-  			<?php
+						<?php
       $sql = "SELECT COUNT(*) FROM users";
       $result = mysqli_query($conn, $sql);
 
@@ -64,65 +70,73 @@ include $root_path . '/db_connect.php';
       $num_pending = $row[0];
 
       mysqli_close($conn);
-  			?>
+                        ?>
 
 
-  			<div class="col p-5">
-  				<div class="row">
-  					<div class="card col-4 bg-primary m-3">
-  						<div class="card-body">
-  							<h5 class="card-title text-white">Users</h5>
-  							<p class="card-text">
-  								<span class="badge badge-secondary">
-  									Number of Users: <strong>
-  										<?php echo $num_users; ?>
-  									</strong>
-  								</span>
-  							</p>
-  						</div>
-  					</div>
+						<div class="col p-5">
+							<div class="row">
+								<div class="info-box col-4  m-3">
+									<span class="info-box-icon bg-warning elevation-1">
+										<i class="fas fa-users"></i>
+									</span>
+									<div class="info-box-content">
+										<span class="info-box-text">Number of Users</span>
+										<span class="info-box-number">
+											<?php echo $num_users; ?>
+										</span>
+									</div>
 
-				  	<?php if ($user->userType != 'system'){?>
-  					<div class="card col-4 m-3">
-  						<div class="card-body">
-  							<h5 class="card-title">Total Files</h5>
-  							<p class="card-text">
-  								<span class="badge badge-secondary text-black">
-  									Number of Files: <strong>
-  										<?php echo $num_files; ?>
-  									</strong>
-  								</span>
-  							</p>
-  						</div>
-  					</div>
-  					<div class="card col-4 bg-danger m-3">
-  						<div class="card-body">
-  							<h5 class="card-title text-white">Archived</h5>
-  							<p class="card-text">
-  								<span class="badge badge-secondary">
-  									Number of Files: <strong>
-  										<?php echo $num_archive; ?>
-  									</strong>
-  								</span>
-  							</p>
-  						</div>
-  					</div>
+								</div>
 
-  					<div class="card col-4 bg-success m-3">
-  						<div class="card-body">
-  							<h5 class="card-title text-white">Pending</h5>
-  							<p class="card-text">
-  								<span class="badge badge-secondary">
-  									Number of Files: <strong>
-  										<?php echo $num_pending; ?>
-  									</strong>
-  								</span>
-  							</p>
-  						</div>
-  					</div>
-                      <?php }?>
-  				</div>
-  			</div>
-  		</div>
-</div></body>
+								<?php if ($user->userType != 'system'){?>
+								<div class="info-box col-4  m-3">
+									<span class="info-box-icon bg-success elevation-1">
+										<i class="far fa-copy"></i>
+									</span>
+									<div class="info-box-content">
+										<span class="info-box-text">Number of Files</span>
+										<span class="info-box-number">
+											<?php echo $num_files; ?>
+										</span>
+									</div>
+
+								</div>
+
+								<div class="info-box col-4  m-3">
+									<span class="info-box-icon bg-danger elevation-1">
+										<i class="fas fa-users"></i>
+									</span>
+									<div class="info-box-content">
+										<span class="info-box-text">Archived</span>
+										<span class="info-box-number">
+											<?php echo $num_archive; ?>
+										</span>
+									</div>
+
+								</div>
+
+								<div class="info-box col-4  m-3">
+									<span class="info-box-icon bg-info elevation-1">
+										<i class="fas fa-users"></i>
+									</span>
+									<div class="info-box-content">
+										<span class="info-box-text">Pending</span>
+										<span class="info-box-number">
+											<?php echo $num_pending; ?>
+										</span>
+									</div>
+
+								</div>
+
+								<?php }?>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php include $root_path . "/includes_js.php";?>
+	<?php include $root_path . "/messaging.php" ?>
+</body>
 </html>
