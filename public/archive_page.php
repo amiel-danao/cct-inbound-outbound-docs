@@ -11,7 +11,7 @@ require_once $root_path . '/models/User.php';
 $user = unserialize($_SESSION["user"]);
 $is_user_query = "send_to='$user->username' AND";
 
-if ($user->userType == 'admin'){
+if ($user->userType == 'admin' || $user->userType == 'admin2'){
 	$is_user_query = '';
 }
 

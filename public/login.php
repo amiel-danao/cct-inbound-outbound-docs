@@ -40,7 +40,7 @@
 	  $sql = "UPDATE users SET last_login = '$now' WHERE id = $user->id";
 	  mysqli_query($conn, $sql);
 
-      if ($user_type == 'admin' || $user_type == 'system') {
+      if ($user_type == 'admin' || $user->userType == 'admin2' || $user_type == 'system') {
 
         $_SESSION['username'] = $username;
         header("location: admin/dashboard.php");
@@ -82,10 +82,10 @@
 					<div class="card-header">
 						<img class="mb-4 img-fluid" src="<?php echo $public_path; ?>\images\logo.png" alt="logo" />
 					</div>
-					<div class="card-body">
+					<div class="card-body text-dark">
 						<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
-							<h1 class="h3 mb-3 fw-normal" style="color:white">Login</h1>
+							<h1 class="h3 mb-3 ">Login</h1>
 							<div class="form-floating">
 								<input type="text" name="username" class="form-control" placeholder="" />
 								<label for="floatingInput">Username</label>

@@ -9,16 +9,23 @@ include $root_path . "/session_checker.php";
 <?php
 require_once $root_path . '/models/User.php';
 $user = unserialize($_SESSION["user"]);
+$is_user_query = "send_to='$user->username' AND";
+
+if ($user->userType == 'admin' || $user->userType == 'admin2'){
+	$is_user_query = '';
+}
+
+
 $messages = array();
 
 if (!empty($_GET['id'])) {
 	$document_id = $_GET['id'];
-	$query = "UPDATE documents SET archive = 1 WHERE id = $document_id AND send_to = '$user->username'";
+	$query = "UPDATE documents SET archive = 1 WHERE $is_user_query id = $document_id;";
 	mysqli_query($conn, $query);
 	$messages[] = "Document was archived successfully.";
 }
 
-header("Location: ".$public_path."/received_page.php");
+header("Location: ".$public_path."/archive_page.php");
 $_SESSION['messages'] = $messages;
 exit;
 

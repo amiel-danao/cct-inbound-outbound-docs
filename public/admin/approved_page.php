@@ -10,7 +10,7 @@ include $root_path . '/db_connect.php';
 <?php
 require_once $root_path . '/models/User.php';
 $user = unserialize($_SESSION["user"]);
-if ($user->userType != 'admin'){
+if ($user->userType != 'admin'&& $user->userType != 'admin2'){
 	header("Location: ".$public_path."/logout.php");
 	exit;
 }
@@ -19,7 +19,7 @@ $errors = array();
 
 if (isset($_POST['search_terms'])) {
 	$sql = "SELECT id, file_name, file_path, uploaded_by, send_to, date_upload, document_type, status FROM documents WHERE (archive = 0 AND status = 'approved') AND (file_name LIKE ? OR send_to LIKE ? OR uploaded_by LIKE ?)";
-	
+
 	$stmt = $conn->prepare($sql);
 	if ($stmt) {
 	} else {

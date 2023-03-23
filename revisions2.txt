@@ -1,0 +1,24 @@
+*ADMIN LTE theme Pati po login form
+
+*hindi dapat nadedeactivate ang System Admin
+
+*Naviview po yung mga sinesend po bago po idownload
+
+
+Tapos po sa dashboard po dapat po makikita daw po yung breakdown ng:
+
+System admin
+*User
+
+Admin
+*Received files 
+Ano ano yung fles
+
+
+
+
+Tapos po sir dalawa po yung mag aapprove
+
+Bale po Admin 1 iapprove po muna niya bago tumaas sa Admin 2
+
+*Report module

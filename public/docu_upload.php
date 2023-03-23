@@ -186,6 +186,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
     </div>
     </div>
+      
+  <?php include $root_path . "/includes_js.php";?>
+	<?php include $root_path . "/messaging.php" ?>
       <script src="js/jquery.multi-select.js" type="text/javascript"></script>
       <script>
           $('#send_to').multiSelect();
@@ -199,8 +202,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           });
           
       </script>
-  <?php include $root_path . "/includes_js.php";?>
-	<?php include $root_path . "/messaging.php" ?>
    </body>
     
 </html>

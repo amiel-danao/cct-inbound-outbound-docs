@@ -253,18 +253,27 @@ end:
 
                 <div class="form-group">
                     <label for="user_type">User Type</label>
-                    <select class="form-control mb-2" id="user_type" name="user_type" aria-label="User Type">
-                      <option <?php if (isset($form_values['user_type']) && $form_values['user_type'] == 'admin') {echo 'selected';} ?> value="admin">Admin</option>
-                      <option <?php if (isset($form_values['user_type']) && $form_values['user_type'] == 'system') {echo 'selected';} ?> value="system">System</option>
+                    <select class="form-control mb-2" id="user_type" name="user_type" aria-label="User Type">                      
+                        <option <?php if (isset($form_values['user_type']) && $form_values['user_type'] == 'system') {echo 'selected';} ?> value="system">System</option>
                         <option <?php if (!isset($form_values['user_type']) || $form_values['user_type'] == 'user') {echo 'selected';} ?> value="user">User</option>
+                        <option <?php if (isset($form_values['user_type']) && $form_values['user_type'] == 'admin') {echo 'selected';} ?> value="admin">Admin</option>
+                        <option <?php if (isset($form_values['user_type']) && $form_values['user_type'] == 'admi2') {echo 'selected';} ?> value="admin2">Admin2</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="active_select">Active</label>
-                    <select class="form-control mb-2" id="active_select" name="active" aria-label="Active">
+                    <select class="form-control mb-2" id="active_select" name="active" aria-label="Active" <?php if (isset($form_values['user_type']) && ($form_values['user_type'] == 'admin'  || $user->userType == 'admin2')) {echo 'disabled';} ?> >
                         <option <?php if (isset($form_values['active']) && $form_values['active'] == 1) {echo 'selected';} ?> value="1">Activated</option>
-                        <option <?php if (isset($form_values['active']) && $form_values['active'] == 0) {echo 'selected';} ?> value="0">Deactivated</option>
+                        <?php if (!isset($form_values['user_type']) || ($form_values['user_type'] != 'admin' && $form_values['user_type'] != 'admin2')){
+						
+                                if(isset($form_values['active']) && $form_values['active'] == 0){
+								  echo '<option selected value="0">Deactivated</option>';
+								}
+                                else{
+                                    echo '<option value="0">Deactivated</option>';
+								}
+							  } ?>
                     </select>
                 </div>
 
@@ -280,8 +289,33 @@ end:
 </div>
 </div>
 </div>
-<!--</div>-->
-  	<?php include $root_path . "/includes_js.php";?>
+      <?php include $root_path . "/includes_js.php";?>
 	<?php include $root_path . "/messaging.php" ?>
+      <script>
+          $(function () {
+              let user_type = $('#user_type').val();
+              if (user_type == 'admin' || user_type == 'admin2') {
+                select.value = '1';
+                $(select).attr('disabled', 'disabled');
+              }
+
+
+              $('#user_type').on('change', function () {
+                  let val = $(this).val();
+                  console.log(val);
+                  const select = document.querySelector('#active_select');
+                  if (val == 'admin' || val == 'admin2') {
+
+                      select.value = '1';
+                      $(select).attr('disabled', 'disabled');
+                  }
+                  else {
+                      $(select).removeAttr('disabled');
+                  }
+              });
+          });
+      </script>
+<!--</div>-->
+  	
   </body>
 </html>

@@ -25,7 +25,6 @@ if ($user->userType != 'system'){
 </head>
 <body class="hold-transition sidebar-mini">
 	<div class="wrapper">
-		<?php include $root_path . "/messaging.php" ?>
 		<!--sidebar-->
 		<?php include $root_path . "/sidebar.php"; ?>
 		<div class="content-wrapper">
@@ -87,7 +86,7 @@ if ($user->userType != 'system'){
       echo "</table>";
 
       mysqli_close($conn);
-									?>
+                                    ?>
 								</tbody>
 							</table>
 
@@ -99,6 +98,8 @@ if ($user->userType != 'system'){
 				</div>
 			</div>
 		</div>
-	</div>	
+	</div>
+	<?php include $root_path . "/includes_js.php";?>
+	<?php include $root_path . "/messaging.php" ?>
 </body>
 </html>

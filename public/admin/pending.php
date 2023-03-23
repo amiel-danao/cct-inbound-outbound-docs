@@ -11,7 +11,7 @@ require_once $root_path . '/models/User.php';
 $user = unserialize($_SESSION["user"]);
 $messages = array();
 
-if ($user->userType != 'admin'){
+if ($user->userType != 'admin' && $user->userType != 'admin2'){
 	header("Location: ".$public_path."/logout.php");
 	exit;
 }

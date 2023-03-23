@@ -129,7 +129,113 @@ include $root_path . '/db_connect.php';
 								</div>
 
 								<?php }?>
+
+
 							</div>
+
+							<?php if ($user->userType == 'system'){?>
+							<div class="row">
+								<div class="col-12">
+									<div class="card">
+										<div class="card-header border-0">
+											<h3 class="card-title">Recent Logins</h3>
+										</div>
+										<div class="card-body table-responsive p-0">
+											<table class="table table-striped table-valign-middle">
+												<thead>
+													<tr>
+														<th>Username</th>
+														<th>First Name</th>
+														<th>Last Name</th>
+														<th>Last Login</th>
+														<th>User Type</th>
+													</tr>
+												</thead>
+												<tbody>
+													<?php
+														include $root_path .'/db_connect.php';
+													  // Select data from users table
+														$sql = "SELECT username, first_name, last_name, last_login, user_type FROM users WHERE NOT last_login is null ORDER BY last_login DESC LIMIT 5;";
+													  $result = mysqli_query($conn, $sql);
+
+													  // Check for errors
+													  if (!$result) {
+														  die("Error executing query: " . mysqli_error($conn));
+													  }
+
+													  // Generate table using result data
+													  while ($row = mysqli_fetch_assoc($result)) {
+														  echo "<tr>";
+														  echo "<td>" . $row["username"] . "</td>";
+														  echo "<td>" . $row["first_name"] . "</td>";
+														  echo "<td>" . $row["last_name"] . "</td>";
+														  echo "<td>" . $row["last_login"] . "</td>";
+														  echo "<td>" . $row["user_type"] . "</td>";
+														  echo "</tr>";
+													  }
+
+													  mysqli_close($conn);
+													?>
+												</tbody>
+											</table>											
+										</div>
+									</div>
+
+								</div>
+							</div>
+							<?php }?>
+
+
+							<?php if ($user->userType == 'admin' || $user->userType == 'admin2'){?>
+							<div class="row">
+								<div class="col-12">
+									<div class="card">
+										<div class="card-header border-0">
+											<h3 class="card-title">Recent Files</h3>
+										</div>
+										<div class="card-body table-responsive p-0">
+											<table class="table table-striped table-valign-middle">
+												<thead>
+													<tr>
+														<th>File Name</th>
+														<th>Send To</th>
+														<th>Uploaded By</th>
+														<th>Date Uploaded</th>
+													</tr>
+												</thead>
+												<tbody>
+													<?php
+															include $root_path .'/db_connect.php';
+															$sql = "SELECT file_name, uploaded_by, send_to, date_upload, document_type FROM documents WHERE status = 'approved' ORDER BY date_upload DESC LIMIT 5;";
+														  $stmt = $conn->prepare($sql);
+
+														  $stmt->execute();
+														  $result = $stmt->get_result();
+
+														if (mysqli_num_rows($result) > 0) {
+															while($row = mysqli_fetch_assoc($result)) {
+																echo '<tr>
+																	<td>' . $row["file_name"]. '</td>
+																	<td>' . $row["send_to"]. '</td>
+																	<td>' . $row["uploaded_by"]. '</td>
+																	<td>' . $row["date_upload"]. '</td>
+																	</tr>';
+															}
+														}
+														else{
+															echo '<tr>
+											  <td colspan="8" class="text-center">No records...</td>
+											</tr>';
+														}
+													?>
+												</tbody>
+											</table>
+										</div>
+									</div>
+
+								</div>
+							</div>
+							<?php }?>
 						</div>
 					</div>
 				</div>
