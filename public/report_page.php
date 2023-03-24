@@ -10,9 +10,15 @@ include $root_path . '/db_connect.php';
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['form_values'] = $_POST;
-	$selectedYear = trim($_POST['year']);
+	$selectedYear = $_POST['year'];
 	$selectedMonth = $_POST["month"];
 }
+else{
+	$selectedYear = date("Y");
+	$selectedMonth = '01';
+}
+
+$document_date_query = "AND (date_upload BETWEEN '$selectedYear-$selectedMonth-01' AND '$selectedYear-$selectedMonth-31');";
 
 
 require_once $root_path . '/models/User.php';
@@ -20,7 +26,7 @@ $user = unserialize($_SESSION["user"]);
 
 $errors = array();
 
-$sql = "SELECT COUNT(*) FROM documents WHERE uploaded_by='$user->username' AND status = 'approved';";
+$sql = "SELECT * FROM documents WHERE uploaded_by='$user->username' $document_date_query";
 
 $result = mysqli_query($conn, $sql);
 
@@ -29,7 +35,29 @@ if (!$result) {
 	goto end;
 }
 
-$approved_count = mysqli_num_rows($result);
+$counts = array("approved"=>0, "pending"=> 0, "rejected"=> 0, "archive"=> 0);
+$total_files = 0;
+
+while($row = $result->fetch_assoc()) {
+	$status = $row["status"];
+	$counts[$status]++;
+	$total_files++;
+}
+
+if ($total_files > 0){
+	$approved_percent = round(($counts['approved']/$total_files) * 100, 2);
+	$pending_percent = round(($counts['pending']/$total_files) * 100, 2);
+	$rejected_percent = round(($counts['rejected']/$total_files) * 100, 2);
+	$archive_percent = round(($counts['archive']/$total_files) * 100, 2);
+}
+else{
+	$approved_percent = 0;
+	$pending_percent = 0;
+	$rejected_percent = 0;
+	$archive_percent = 0;
+}
+
+
 end:
 $_SESSION['errors'] = $errors;
 ?>
@@ -76,6 +104,7 @@ $_SESSION['errors'] = $errors;
 							</div>
 						</div>
 					</form>
+
 					<div class="row">
 						<div class="col-12 card card-primary card-outline">
 							<div class="card-header">
@@ -86,50 +115,58 @@ $_SESSION['errors'] = $errors;
 									<tbody>
 									<tr>
 										<td>1.</td>
-										<td>Approved Files</td>
+										<td>Approved Files
+										<span class="badge bg-success"><?php echo $counts['approved'] ?></span>
+										</td>
 										<td>
 										<div class="progress progress-xs">
-											<div class="progress-bar bg-success" style="width: 55%"></div>
+											<div id="approve_progressbar" class="progress-bar bg-success" style="width: <?php echo $approved_percent.'%' ?>"></div>
 										</div>
 										</td>
 										<td>
-										<span class="badge bg-danger">55%</span>
+										<span id="approve_percent" class="badge bg-success"><?php echo $approved_percent.'%' ?></span>
 										</td>
 									</tr>
 									<tr>
 										<td>2.</td>
-										<td>Pending Files</td>
+										<td>Pending Files
+										<span class="badge bg-primary"><?php echo $counts['pending'] ?></span>
+										</td>
 										<td>
 										<div class="progress progress-xs">
-											<div class="progress-bar bg-warning" style="width: 70%"></div>
+											<div class="progress-bar bg-primary" style="width: <?php echo $pending_percent.'%' ?>"></div>
 										</div>
 										</td>
 										<td>
-										<span class="badge bg-warning">70%</span>
+										<span class="badge bg-primary"><?php echo $pending_percent.'%' ?></span>
 										</td>
 									</tr>
 									<tr>
 										<td>3.</td>
-										<td>Rejected Files</td>
+										<td>Rejected Files
+										<span class="badge bg-warning"><?php echo $counts['rejected'] ?></span>
+										</td>
 										<td>
 										<div class="progress progress-xs progress-striped active">
-											<div class="progress-bar bg-primary" style="width: 30%"></div>
+											<div class="progress-bar bg-warning" style="width: <?php echo $rejected_percent.'%' ?>"></div>
 										</div>
 										</td>
 										<td>
-										<span class="badge bg-primary">30%</span>
+										<span class="badge bg-warning"><?php echo $rejected_percent.'%' ?></span>
 										</td>
 									</tr>
 									<tr>
 										<td>4.</td>
-										<td>Archive Files</td>
+										<td>Archive Files
+										<span class="badge bg-danger"><?php echo $counts['archive'] ?></span>
+										</td>
 										<td>
 										<div class="progress progress-xs progress-striped active">
-											<div class="progress-bar bg-success" style="width: 90%"></div>
+											<div class="progress-bar bg-danger" style="width: <?php echo $archive_percent.'%' ?>"></div>
 										</div>
 										</td>
 										<td>
-										<span class="badge bg-success">90%</span>
+										<span class="badge bg-danger"><?php echo $archive_percent.'%' ?></span>
 										</td>
 									</tr>
 									</tbody>
