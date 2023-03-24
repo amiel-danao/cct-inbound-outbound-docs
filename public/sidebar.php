@@ -135,6 +135,8 @@ $user = unserialize($_SESSION["user"]);
 							</a>
 						</li>
 						<?php } ?>
+
+						<?php if ($user->userType != 'system'){ ?>
 						<li class="nav-item">
 							<a href="<?php echo $public_path;?>/report_page.php" class="nav-link link-dark">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-break-fill" viewbox="0 0 16 16">
@@ -145,6 +147,7 @@ $user = unserialize($_SESSION["user"]);
 								</p>
 							</a>
 						</li>
+						<?php } ?>
 						<li class="nav-item">
 							<a href="<?php echo $public_path;?>/logout.php" class="nav-link link-dark">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewbox="0 0 16 16">

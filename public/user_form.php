@@ -89,8 +89,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$errors[] = "Username already exists, please choose a different username.";
             goto end;
 		} else {
-			$sql = "INSERT INTO users (username, first_name, middle_name, last_name, password, contact_number)
-    VALUES ('$username', '$first_name', '$middle_name', '$last_name', '$password', '$contact_number')";
+			$sql = "INSERT INTO users (username, first_name, middle_name, last_name, password, contact_number, user_type, active)
+    VALUES ('$username', '$first_name', '$middle_name', '$last_name', '$password', '$contact_number', '$user_type', '$active')";
 
 			if ($conn->query($sql) === TRUE) {
 				$messages[] =  "New user created successfully";
@@ -112,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				$errors[] = "Username already exists, please choose a different username.";
 				goto end;
 			}
-		}     
+		}
 		
         $sql = <<<EOD
         UPDATE users SET 
@@ -151,7 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         $messages[] = "user updated successfully.";
-
+        goto end;
 	}
 }
 else if ($_SERVER["REQUEST_METHOD"] == "GET"){
@@ -257,23 +257,22 @@ end:
                         <option <?php if (isset($form_values['user_type']) && $form_values['user_type'] == 'system') {echo 'selected';} ?> value="system">System</option>
                         <option <?php if (!isset($form_values['user_type']) || $form_values['user_type'] == 'user') {echo 'selected';} ?> value="user">User</option>
                         <option <?php if (isset($form_values['user_type']) && $form_values['user_type'] == 'admin') {echo 'selected';} ?> value="admin">Admin</option>
-                        <option <?php if (isset($form_values['user_type']) && $form_values['user_type'] == 'admi2') {echo 'selected';} ?> value="admin2">Admin2</option>
+                        <option <?php if (isset($form_values['user_type']) && $form_values['user_type'] == 'admin2') {echo 'selected';} ?> value="admin2">Admin2</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="active_select">Active</label>
-                    <select class="form-control mb-2" id="active_select" name="active" aria-label="Active" <?php if (isset($form_values['user_type']) && ($form_values['user_type'] == 'admin'  || $user->userType == 'admin2')) {echo 'disabled';} ?> >
+                    <select class="form-control mb-2" id="active_select" name="active" aria-label="Active" <?php if (isset($form_values['user_type']) && ($form_values['user_type'] == 'admin'  || $user->userType == 'admin2')) {echo 'readonly';} ?> >
                         <option <?php if (isset($form_values['active']) && $form_values['active'] == 1) {echo 'selected';} ?> value="1">Activated</option>
-                        <?php if (!isset($form_values['user_type']) || ($form_values['user_type'] != 'admin' && $form_values['user_type'] != 'admin2')){
-						
-                                if(isset($form_values['active']) && $form_values['active'] == 0){
-								  echo '<option selected value="0">Deactivated</option>';
-								}
-                                else{
-                                    echo '<option value="0">Deactivated</option>';
-								}
-							  } ?>
+                        <?php						
+                            if(isset($form_values['active']) && $form_values['active'] == 0 && $form_values['user_type'] != 'admin' && $form_values['user_type'] != 'admin2'){
+								echo '<option selected value="0">Deactivated</option>';
+							}
+                            else{
+                                echo '<option value="0">Deactivated</option>';
+							}
+					    ?>
                     </select>
                 </div>
 
@@ -294,23 +293,24 @@ end:
       <script>
           $(function () {
               let user_type = $('#user_type').val();
+              const select = document.querySelector('#active_select');
+
               if (user_type == 'admin' || user_type == 'admin2') {
                 select.value = '1';
-                $(select).attr('disabled', 'disabled');
+                $(select).attr('readonly', 'readonly');
               }
 
 
               $('#user_type').on('change', function () {
                   let val = $(this).val();
-                  console.log(val);
-                  const select = document.querySelector('#active_select');
+                  console.log(val);                  
                   if (val == 'admin' || val == 'admin2') {
 
                       select.value = '1';
-                      $(select).attr('disabled', 'disabled');
+                      $(select).attr('readonly', 'readonly');
                   }
                   else {
-                      $(select).removeAttr('disabled');
+                      $(select).removeAttr('readonly');
                   }
               });
           });

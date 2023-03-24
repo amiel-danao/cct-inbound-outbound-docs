@@ -49,7 +49,7 @@ include $root_path . '/db_connect.php';
       $row = mysqli_fetch_row($result);
       $num_files = $row[0];
 
-      $sql = "SELECT COUNT(*) FROM documents WHERE archive = 1";
+      $sql = "SELECT COUNT(*) FROM documents WHERE status = 'archive'";
       $result = mysqli_query($conn, $sql);
 
       if (!$result) {

@@ -18,7 +18,7 @@ if ($user->userType == 'admin' || $user->userType == 'admin2'){
 $errors = array();
 
 if (isset($_POST['search_terms'])) {
-	$sql = "SELECT id, file_name, file_path, uploaded_by, date_upload, document_type, send_to, status FROM documents WHERE ($is_user_query archive = 1) AND (file_name LIKE ? OR send_to LIKE ? OR uploaded_by LIKE ?)";
+	$sql = "SELECT id, file_name, file_path, uploaded_by, date_upload, document_type, send_to, status, date_archived FROM documents WHERE ($is_user_query status = 'archive') AND (file_name LIKE ? OR send_to LIKE ? OR uploaded_by LIKE ?)";
 
 	$stmt = $conn->prepare($sql);
 	if ($stmt) {
@@ -30,7 +30,7 @@ if (isset($_POST['search_terms'])) {
 	$search_terms = "%" . $_POST['search_terms'] . "%";
 	$stmt->bind_param("sss", $search_terms, $search_terms, $search_terms);
 } else {
-	$sql = "SELECT id, file_name, file_path, uploaded_by, date_upload, document_type, send_to, status FROM documents WHERE ".$is_user_query." archive = 1";
+	$sql = "SELECT id, file_name, file_path, uploaded_by, date_upload, document_type, send_to, status, date_archived FROM documents WHERE $is_user_query status = 'archive'";
 	$stmt = $conn->prepare($sql);
 }
 $stmt->execute();
@@ -65,6 +65,7 @@ $_SESSION['errors'] = $errors;
 									<thead class="thead-primary">
 										<tr>
 											<th>File Name</th>
+											<th>Date Archived</th>
 											<th>Uploaded by</th>
 											<th>Send to</th>
 											<th>Upload Date</th>
@@ -78,6 +79,7 @@ $_SESSION['errors'] = $errors;
 								while($row = mysqli_fetch_assoc($result)) {
 									echo '<tr>
                     <td>' . $row["file_name"]. '</td>
+                    <td>' . $row["date_archived"]. '</td>
                     <td>' . $row["uploaded_by"]. '</td>
 					<td>' . $row["send_to"]. '</td>
                     <td>' . $row["date_upload"]. '</td>
@@ -93,7 +95,7 @@ $_SESSION['errors'] = $errors;
                   <td colspan="6" class="text-center">No records...</td>
                 </tr>';
 							}
-                                        ?>
+										?>
 
 									</tbody>
 								</table>

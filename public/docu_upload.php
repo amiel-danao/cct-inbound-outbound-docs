@@ -55,9 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	if (move_uploaded_file($file['tmp_name'], $file_path)){
         $status = 'pending';
-        if ($document_type == 'Personal'){
-            $status = 'approved';
-		}
+		//if ($document_type == 'Personal'){
+		//	$status = 'approved';
+		//}
 		// Insert a new row into the documents table
 		$date_upload = date('Y-m-d H:i:s');
 
@@ -134,18 +134,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   								<input type="text" name="file_name" id="file_name" class="form-control form-control-lg" required />  								
   							</div>
 
-  							<script type="text/javascript">
-                              $(document).ready(function(){
-                                 $("#file").change(function(){
-                                    var fileName = $(this).val();
-                                    $("#noFile").text(fileName);
-                                 });
-                              });
-  							</script>
+  							
 
                             <div class="input-group file-upload mb-3">
                                 <div class="file-select">
-                                    <label class="custom-file-label" for="file">Choose file</label>
+                                    <label class="custom-file-label" for="file" id="noFile">Choose file</label>
                                     <input type="file" name="file" id="file" accept=".docx,.doc,.pptx,.ppt,.xlsx,.xls,.pdf,.odt, .jpg" required >                                    
                                 </div>
                             </div>
@@ -202,6 +195,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           });
           
       </script>
+
+      <script type="text/javascript">
+        $(document).ready(function(){
+            $("#file").change(function(){
+            var fileName = $(this).val();
+            $("#noFile").text(fileName);
+            });
+        });
+  	</script>
    </body>
     
 </html>

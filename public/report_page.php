@@ -174,6 +174,15 @@ $_SESSION['errors'] = $errors;
 							</div>
 						</div>
 					</div>
+					
+					<div class="row">
+						<div class="col-4">
+							<div class="callout callout-info">
+								<h5>Last login</h5>
+								<p><?php echo $user->lastLogin; ?></p>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

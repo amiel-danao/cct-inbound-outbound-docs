@@ -21,6 +21,9 @@ include $root_path . '/db_connect.php';
 				<div class="content">
 					<div class="container-fluid">
 						<div class="row">
+							<h1>Dashboard</h1>
+						</div>
+						<div class="row">
 
 							<?php
         require_once $root_path . '/models/User.php';
@@ -36,7 +39,7 @@ include $root_path . '/db_connect.php';
       $row = mysqli_fetch_row($result);
       $num_files_received = $row[0];
 
-      $sql = "SELECT COUNT(*) FROM documents WHERE archive = 1 AND send_to = '$user->username'";
+      $sql = "SELECT COUNT(*) FROM documents WHERE status = 'archive' AND send_to = '$user->username'";
       $result = mysqli_query($conn, $sql);
 
       if (!$result) {
@@ -57,49 +60,49 @@ include $root_path . '/db_connect.php';
       $num_sent = $row[0];
 
       mysqli_close($conn);
-							?>
+                            ?>
 
 
 							<div class="col p-5">
 								<div class="row">
-									<div class="card col-4 m-3">
-										<div class="card-body">
-											<h5 class="card-title">Total Files Received</h5>
-											<p class="card-text">
-												<span class="badge badge-secondary text-black">
-													Number of Files: <strong>
-														<?php echo $num_files_received; ?>
-													</strong>
-												</span>
-											</p>
+									<div class="info-box col-4  m-3">
+										<span class="info-box-icon bg-success elevation-1">
+											<i class="fas fa-copy"></i>
+										</span>
+										<div class="info-box-content">
+											<span class="info-box-text">Total Files Received</span>
+											<span class="info-box-number">
+												<?php echo $num_files_received; ?>
+											</span>
 										</div>
+
+									</div>
+
+									<div class="info-box col-4  m-3">
+										<span class="info-box-icon bg-primary elevation-1">
+											<i class="fas fa-copy"></i>
+										</span>
+										<div class="info-box-content">
+											<span class="info-box-text">Total Files Sent</span>
+											<span class="info-box-number">
+												<?php echo $num_sent; ?>
+											</span>
+										</div>
+
 									</div>
 
 
-									<div class="card col-4 bg-success m-3">
-										<div class="card-body">
-											<h5 class="card-title text-white">Total Files Sent</h5>
-											<p class="card-text">
-												<span class="badge badge-secondary">
-													Number of Files: <strong>
-														<?php echo $num_sent; ?>
-													</strong>
-												</span>
-											</p>
+									<div class="info-box col-4  m-3">
+										<span class="info-box-icon bg-danger elevation-1">
+											<i class="fas fa-copy"></i>
+										</span>
+										<div class="info-box-content">
+											<span class="info-box-text">Total Files Archived</span>
+											<span class="info-box-number">
+												<?php echo $num_sent; ?>
+											</span>
 										</div>
-									</div>
 
-									<div class="card col-4 bg-danger m-3">
-										<div class="card-body">
-											<h5 class="card-title text-white">Archived</h5>
-											<p class="card-text">
-												<span class="badge badge-secondary">
-													Number of Files: <strong>
-														<?php echo $num_archive; ?>
-													</strong>
-												</span>
-											</p>
-										</div>
 									</div>
 								</div>
 							</div>

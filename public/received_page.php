@@ -25,7 +25,7 @@ if (isset($_POST['search_terms'])) {
 	$search_terms = "%" . $_POST['search_terms'] . "%";
 	$stmt->bind_param("sss", $search_terms, $search_terms, $search_terms);
 } else {
-	$sql = "SELECT id, file_name, file_path, uploaded_by, date_upload, document_type, status FROM documents WHERE send_to='$user->username' AND archive = 0";
+	$sql = "SELECT id, file_name, file_path, uploaded_by, date_upload, document_type, status FROM documents WHERE send_to='$user->username' AND status != 'archive'";
 	$stmt = $conn->prepare($sql);
 }
 $stmt->execute();

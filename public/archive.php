@@ -20,7 +20,9 @@ $messages = array();
 
 if (!empty($_GET['id'])) {
 	$document_id = $_GET['id'];
-	$query = "UPDATE documents SET archive = 1 WHERE $is_user_query id = $document_id;";
+	$date_archived = date('Y-m-d H:i:s');
+
+	$query = "UPDATE documents SET status = 'archive', date_archived = '$date_archived' WHERE $is_user_query id = $document_id;";
 	mysqli_query($conn, $query);
 	$messages[] = "Document was archived successfully.";
 }

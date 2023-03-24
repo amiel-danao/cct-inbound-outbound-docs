@@ -16,7 +16,7 @@ if ($user->userType != 'admin' && $user->userType != 'admin2'){
 $errors = array();
 
 if (isset($_POST['search_terms'])) {
-	$sql = "SELECT id, file_name, file_path, uploaded_by, send_to, date_upload, document_type, status FROM documents WHERE file_name LIKE ? OR send_to LIKE ? OR uploaded_by LIKE ?";
+	$sql = "SELECT id, file_name, file_path, uploaded_by, send_to, date_upload, document_type, status, approver1, approver2 FROM documents WHERE status = 'pending' file_name LIKE ? OR send_to LIKE ? OR uploaded_by LIKE ?";
 	$stmt = $conn->prepare($sql);
 	if ($stmt) {
 	} else {
@@ -27,9 +27,10 @@ if (isset($_POST['search_terms'])) {
 	$search_terms = "%" . $_POST['search_terms'] . "%";
 	$stmt->bind_param("sss", $search_terms, $search_terms, $search_terms);
 } else {
-	$sql = "SELECT id, file_name, file_path, uploaded_by, send_to, date_upload, document_type, status FROM documents WHERE archive = 0 AND status = 'pending'";
+	$sql = "SELECT id, file_name, file_path, uploaded_by, send_to, date_upload, document_type, status, approver1, approver2 FROM documents WHERE status = 'pending'";
 	$stmt = $conn->prepare($sql);
 }
+
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -85,7 +86,14 @@ $_SESSION['errors'] = $errors;
                     <td>' . $row["date_upload"]. '</td>
                     <td>' . $row["document_type"]. '</td>';
 									echo '<td><a type="button" class="btn btn-success"  target="_blank" href="' . $public_path . $row["file_path"] . '">Download</a></td>';
-									echo '<td><a type="button" class="btn btn-primary" href="'.$public_path.'/admin/approve.php?id=' . $row['id'] . '">approve</a></td>';
+
+									if(($user->userType == 'admin' && $row['approver1'] == '') || ($user->userType == 'admin2')){
+										echo '<td><a type="button" class="btn btn-primary" href="'.$public_path.'/admin/approve.php?id=' . $row['id'] . '">approve</a></td>';
+									}
+									else{
+										echo '<td>Pending for admin2</td>';
+									}
+
 									echo '<td><a type="button" class="btn btn-danger" href="'.$public_path.'/archive.php?id=' . $row['id'] . '">Archive</a></td>';
 									echo '</tr>';
 								}
@@ -95,7 +103,7 @@ $_SESSION['errors'] = $errors;
                   <td colspan="8" class="text-center">No records...</td>
                 </tr>';
 							}
-                                        ?>
+										?>
 
 									</tbody>
 								</table>

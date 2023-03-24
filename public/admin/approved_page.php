@@ -18,7 +18,7 @@ if ($user->userType != 'admin'&& $user->userType != 'admin2'){
 $errors = array();
 
 if (isset($_POST['search_terms'])) {
-	$sql = "SELECT id, file_name, file_path, uploaded_by, send_to, date_upload, document_type, status FROM documents WHERE (archive = 0 AND status = 'approved') AND (file_name LIKE ? OR send_to LIKE ? OR uploaded_by LIKE ?)";
+	$sql = "SELECT id, file_name, file_path, uploaded_by, send_to, date_upload, document_type, status, date_approved1, date_approved2 FROM documents WHERE (archive = 0 AND status = 'approved') AND (file_name LIKE ? OR send_to LIKE ? OR uploaded_by LIKE ?)";
 
 	$stmt = $conn->prepare($sql);
 	if ($stmt) {
@@ -30,7 +30,7 @@ if (isset($_POST['search_terms'])) {
 	$search_terms = "%" . $_POST['search_terms'] . "%";
 	$stmt->bind_param("sss", $search_terms, $search_terms, $search_terms);
 } else {
-	$sql = "SELECT id, file_name, file_path, uploaded_by, send_to, date_upload, document_type, status FROM documents WHERE archive = 0 AND status = 'approved'";
+	$sql = "SELECT id, file_name, file_path, uploaded_by, send_to, date_upload, document_type, status, date_approved1, date_approved2 FROM documents WHERE status = 'approved'";
 	$stmt = $conn->prepare($sql);
 }
 $stmt->execute();
@@ -68,6 +68,8 @@ $_SESSION['errors'] = $errors;
 											<th>Uploaded by</th>
 											<th>Send to</th>
 											<th>Upload Date</th>
+											<th>Approved Date1</th>
+											<th>Approved Date2</th>
 											<th>Type</th>
 											<th>Download Link</th>
 											<th>Pend</th>
@@ -83,6 +85,8 @@ $_SESSION['errors'] = $errors;
                     <td>' . $row["uploaded_by"]. '</td>
 					<td>' . $row["send_to"]. '</td>
                     <td>' . $row["date_upload"]. '</td>
+                    <td>' . $row["date_approved1"]. '</td>
+                    <td>' . $row["date_approved2"]. '</td>
                     <td>' . $row["document_type"]. '</td>';
 									echo '<td><a type="button" class="btn btn-success"  target="_blank" href="' . $public_path . $row["file_path"] . '">Download</a></td>';
 									echo '<td><a type="button" class="btn btn-primary" href="'.$public_path.'/admin/pending.php?id=' . $row['id'] . '">Pend</a></td>';
