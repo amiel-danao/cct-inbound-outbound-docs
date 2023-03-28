@@ -195,6 +195,13 @@ end:
     <meta name="viewport" content="width=device-width, initial-scale=1">
   	<?php include $root_path . "/includes.php";?>
     <title><?php echo $pageTitle;?></title>
+      <style>
+          .my-read-only-class 
+            {   
+              pointer-events: none;
+               cursor: not-allowed;
+            }
+      </style>
   </head>
   <body class="hold-transition sidebar-mini">
 	<div class="wrapper">
@@ -263,10 +270,10 @@ end:
 
                 <div class="form-group">
                     <label for="active_select">Active</label>
-                    <select class="form-control mb-2" id="active_select" name="active" aria-label="Active" <?php if (isset($form_values['user_type']) && ($form_values['user_type'] == 'admin'  || $user->userType == 'admin2')) {echo 'readonly';} ?> >
+                    <select class="form-control mb-2" id="active_select" name="active" aria-label="Active" <?php if (isset($form_values['user_type']) && ($form_values['user_type'] == 'system')) {echo 'readonly';} ?> >
                         <option <?php if (isset($form_values['active']) && $form_values['active'] == 1) {echo 'selected';} ?> value="1">Activated</option>
                         <?php						
-                            if(isset($form_values['active']) && $form_values['active'] == 0 && $form_values['user_type'] != 'admin' && $form_values['user_type'] != 'admin2'){
+                            if(isset($form_values['active']) && $form_values['active'] == 0 && $form_values['user_type'] != 'system'){
 								echo '<option selected value="0">Deactivated</option>';
 							}
                             else{
@@ -295,22 +302,25 @@ end:
               let user_type = $('#user_type').val();
               const select = document.querySelector('#active_select');
 
-              if (user_type == 'admin' || user_type == 'admin2') {
+              if (user_type == 'system') {
                 select.value = '1';
-                $(select).attr('readonly', 'readonly');
+                  $(select).attr('readonly', 'readonly');
+                  $(select).toggleClass('my-read-only-class', true);
               }
 
 
               $('#user_type').on('change', function () {
                   let val = $(this).val();
                   console.log(val);                  
-                  if (val == 'admin' || val == 'admin2') {
+                  if (val == 'system') {
 
                       select.value = '1';
                       $(select).attr('readonly', 'readonly');
+                      $(select).toggleClass('my-read-only-class', true);
                   }
                   else {
                       $(select).removeAttr('readonly');
+                      $(select).toggleClass('my-read-only-class', false);
                   }
               });
           });
